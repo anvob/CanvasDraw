@@ -3,6 +3,8 @@ package com.anvob.canvasdraw.Filters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -24,6 +26,7 @@ public class SlideInFilter extends ActionFilter {
     private int mVariant;
     private Paint paint;
     private ActionFilter mNextFilter;
+    Matrix m = new Matrix();
 
     public SlideInFilter( int framesCount, int variant){
         this.framesCount=framesCount;
@@ -35,66 +38,55 @@ public class SlideInFilter extends ActionFilter {
         this.bitmap = bitmap;
     }
 
+    @Override
+    public void setPaint(Paint paint) {
+        this.paint=paint;
+    }
+
     public void setVariant(int variant){
         mVariant=variant;
     }
 
     @Override
-    public Bitmap paintFrame(Canvas canvas, int curFrame) {
-        int width=0,height=0,x=0,y=0,drawX=0,drawY=0;
+    public void paintFrame(Canvas canvas, int curFrame) {
         if(curFrame<=framesCount&&curFrame>0) {
             if(curFrame<framesCount) {
                 int stepHeight = bitmap.getHeight() / framesCount * curFrame;
                 int stepWidth = bitmap.getWidth() / framesCount * curFrame;
+                m.reset();
                 switch (mVariant){
-                    case 0:
-                        width = stepWidth;
-                        height = bitmap.getHeight();
-                        x = bitmap.getWidth() - width;
-                        y = 0;
-                        drawX=0;
-                        drawY=0;
+                    case 0: //left to right
+                        if(paint.getXfermode()!=null) {
+                            canvas.drawRect(stepWidth, 0, bitmap.getWidth(), bitmap.getHeight(), paint);
+                        }
+                        m.setTranslate(stepWidth-bitmap.getWidth(),0);
                         break;
-                    case 1:
-                        width = stepWidth;
-                        height = bitmap.getHeight();
-                        x = 0;
-                        y = 0;
-                        drawX=canvas.getWidth() - width;
-                        drawY=0;
+                    case 1: // right to left
+                        if(paint.getXfermode()!=null) {
+                            canvas.drawRect(0, 0, bitmap.getWidth() - stepWidth, canvas.getHeight(), paint);
+                        }
+                        m.setTranslate(bitmap.getWidth()-stepWidth,0);
                         break;
-                    case 2:
-                        x = 0;
-                        y = 0;
-                        width = bitmap.getWidth();
-                        height = stepHeight;
-                        drawY = stepHeight;
-                        drawX=0;
+                    case 2: // top to down
+                        if(paint.getXfermode()!=null) {
+                            canvas.drawRect(0, stepHeight, bitmap.getWidth(), canvas.getHeight(), paint);
+                        }
+                        m.setTranslate(0,stepHeight-bitmap.getHeight());
                         break;
-                    case 3:
-                        x = 0;
-                        y = bitmap.getWidth()-stepHeight;
-                        width = bitmap.getWidth();
-                        height = stepHeight;
-                        drawX=0;
-                        drawY=0;
+                    case 3: // down to top
+                        if(paint.getXfermode()!=null) {
+                            canvas.drawRect(0, 0, bitmap.getWidth(), canvas.getHeight() - stepHeight, paint);
+                        }
+                        m.setTranslate(0,bitmap.getHeight()-stepHeight);
                         break;
                 }
-                Bitmap b2 = Bitmap.createBitmap(bitmap, x, y, width, height);
-                canvas.drawBitmap(b2,drawX,drawY,paint);
-                return b2;
+                canvas.drawBitmap(bitmap,m,paint);
             } else{
                 canvas.drawBitmap(bitmap,0,0,paint);
             }
-
         }else{
             canvas.drawBitmap(bitmap,0,0,paint);
         }
-        //if(mNextFilter!=null){
-        //    mNextFilter.setBitmap(bitmap);
-        //    mNextFilter.paintFrame(canvas,curFrame);
-        //}
-        return bitmap;
     }
 
     @Override

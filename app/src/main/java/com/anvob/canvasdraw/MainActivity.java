@@ -23,6 +23,7 @@ import com.anvob.canvasdraw.Filters.SlideOutFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends Activity {
 
@@ -46,6 +47,7 @@ public class MainActivity extends Activity {
         private DrawThread drawThread;
         Bitmap bitmap;
         Paint paint;
+
         SlideInFilter filter;
         private List<Slide> mSlideList;
         private List<TransitionFilter> mFilterList;
@@ -53,38 +55,61 @@ public class MainActivity extends Activity {
         public DrawView(Context context) {
             super(context);
             getHolder().addCallback(this);
+            Random random = new Random();
             paint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mSlideList = new ArrayList<Slide>();
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             //Bitmap b1 = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/Download/1.png");
             //b1 = Bitmap.createScaledBitmap(b1,1080,1080,true);
             //Bitmap b2 = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/Download/i.jpg");
             //b2 = Bitmap.createScaledBitmap(b2,1080,1080,true);
             //Bitmap b3 = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/Download/image.jpeg");
             //b3 = Bitmap.createScaledBitmap(b3,1080,1080,true);
-            Bitmap b1 = BitmapFactory.decodeResource(getResources(),R.drawable.b4);
+            Bitmap b1 = BitmapFactory.decodeResource(getResources(),R.drawable.b1,options);
             b1 = Bitmap.createScaledBitmap(b1,1080,1080,true);
-            Bitmap b2 = BitmapFactory.decodeResource(getResources(),R.drawable.b2);
+            Bitmap b2 = BitmapFactory.decodeResource(getResources(),R.drawable.b2,options);
             b2 = Bitmap.createScaledBitmap(b2,1080,1080,true);
-            Bitmap b3 = BitmapFactory.decodeResource(getResources(),R.drawable.b3);
+            Bitmap b3 = BitmapFactory.decodeResource(getResources(),R.drawable.b3,options);
             b3 = Bitmap.createScaledBitmap(b3,1080,1080,true);
+            Bitmap b4 = BitmapFactory.decodeResource(getResources(),R.drawable.b4,options);
+            b4 = Bitmap.createScaledBitmap(b4,1080,1080,true);
+            Bitmap b5 = BitmapFactory.decodeResource(getResources(),R.drawable.b5,options);
+            b5 = Bitmap.createScaledBitmap(b5,1080,1080,true);
             mSlideList.add(new Slide(b1, 50));
             mSlideList.add(new Slide(b2, 50));
             mSlideList.add(new Slide(b3, 50));
-
+            mSlideList.add(new Slide(b4, 50));
+            mSlideList.add(new Slide(b5, 50));
 
             mFilterList = new ArrayList<TransitionFilter>();
-            //SlideInOutFilter transFilter = new SlideInOutFilter();
-            //transFilter.setShowFilter(new SlideInFilter(20, 0));
-            //transFilter.setHideFilter(new SlideOutFilter(20,0));
+            //1
             PullInOutFilter transFilter = new PullInOutFilter();
-            PullOutFilter pf = new PullOutFilter(20,3);
-            pf.setNextFilter(new SlideInFilter(20,0 ));
-            transFilter.setShowFilter(pf);
+            int variant = random.nextInt(3);
+            PullOutFilter pof = new PullOutFilter(20,variant);
+            variant = random.nextInt(3);
+            pof.setNextFilter(new SlideInFilter(20,variant));
+            transFilter.setShowFilter(pof);
             mFilterList.add(transFilter);
+            //2
             SlideInOutFilter transFilter2 = new SlideInOutFilter();
-            transFilter2.setShowFilter(new SlideInFilter(20, 3));
-            //transFilter2.setShowFilter(new PullInFilter(20,3));
+            variant = random.nextInt(3);
+            transFilter2.setShowFilter(new SlideInFilter(20, variant));
+            transFilter2.setHideFilter(new SlideOutFilter(20, variant));
             mFilterList.add(transFilter2);
+            //3
+            PullInOutFilter transFilter3 = new PullInOutFilter();
+            variant = random.nextInt(3);
+            PullInFilter pif = new PullInFilter(20,variant);
+            variant = random.nextInt(3);
+            pif.setNextFilter(new SlideInFilter(20,variant));
+            transFilter3.setShowFilter(pif);
+            mFilterList.add(transFilter3);
+            //4
+            SlideInOutFilter transFilter4 = new SlideInOutFilter();
+            variant = random.nextInt(3);
+            transFilter4.setShowFilter(new SlideInFilter(20, variant));
+            mFilterList.add(transFilter4);
         }
         @Override
         public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -120,6 +145,7 @@ public class MainActivity extends Activity {
         class DrawThread extends Thread {
 
             private boolean running = false;
+            Canvas canvas;
             private SurfaceHolder surfaceHolder;
 
             public DrawThread(SurfaceHolder surfaceHolder) {
@@ -132,7 +158,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void run() {
-                Canvas canvas;
+                canvas = null;
                 int curFrame = 0;
                 int slideFrameCount = 0;
                 while (running) {
@@ -148,7 +174,7 @@ public class MainActivity extends Activity {
                                 slideFrameCount += filter.getFramesCount();
                             }
                         }
-                        canvas = null;
+                        //canvas = null;
                         while (curFrame <= slideFrameCount) {
                             try {
                                 canvas = surfaceHolder.lockCanvas(null);
@@ -157,13 +183,7 @@ public class MainActivity extends Activity {
 
                                 //show current slide
                                 if (curFrame <= sl.getFramesCount()) {
-                                    //if(curFrame==0) {
-                                        //Bitmap current_bitmap = Bitmap.createScaledBitmap(sl.getBitmap(),
-                                        //                                                  canvas.getWidth(),
-                                        //                                                  canvas.getHeight(), true);
-                                        canvas.drawBitmap(sl.getBitmap(), 0, 0, paint);
-                                        //current_bitmap=null;
-                                    //}
+                                    canvas.drawBitmap(sl.getBitmap(), 0, 0, paint);
                                     curFrame++;
                                 } else {
                                     if (filter != null) {
@@ -186,9 +206,7 @@ public class MainActivity extends Activity {
                     }
                     running=false;
                 }
-
             }
-
         }
     }
 }

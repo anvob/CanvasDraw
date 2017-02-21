@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import com.anvob.canvasdraw.ActionFilter;
 import com.anvob.canvasdraw.TransitionFilter;
 
+import static android.R.attr.bitmap;
+
 /**
  * Created by anvob on 18.02.2017.
  */
@@ -16,6 +18,10 @@ public class PullInOutFilter extends TransitionFilter {
     private Canvas canvas; // canvas, на котором производится всё рисование
     private int framesCount; // количество кадров, которое создает данный фильтр, отначала до конца.
     private int curFrame; // текущий номер кадра.
+    Paint mPaint;
+    public PullInOutFilter(){
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    }
 
     private ActionFilter showFilter; // фильтр показа
     @Override
@@ -39,19 +45,16 @@ public class PullInOutFilter extends TransitionFilter {
     @Override
     public void paintNext(Canvas canvas, Bitmap bitmap_old, Bitmap bitmap_new, int curFrame) {
         if(showFilter!=null){
-            if(showFilter.getNextFilter()!=null) {
-                ActionFilter f = showFilter.getNextFilter();
-                Bitmap targetBitmap = Bitmap.createBitmap(bitmap_new.getWidth(), bitmap_new.getHeight(),Bitmap.Config.ARGB_4444);
-                Canvas c = new Canvas(targetBitmap);
-                c.drawBitmap(bitmap_new,0,0,new Paint(Paint.ANTI_ALIAS_FLAG));
-                c.drawColor(Color.BLACK);
-                f.setBitmap(bitmap_new);
-                bitmap_new = f.paintFrame(c,curFrame+f.getFramesCount()/2);
-                targetBitmap.recycle();
-            }
+
             if(showFilter.getClass()==PullOutFilter.class){
-                canvas.drawColor(Color.BLACK);
-                canvas.drawBitmap(bitmap_new, 0, 0, new Paint(Paint.ANTI_ALIAS_FLAG));
+                if(showFilter.getNextFilter()!=null) {
+                    ActionFilter f = showFilter.getNextFilter();
+                    f.setBitmap(bitmap_new);
+                    canvas.drawColor(Color.BLACK);
+                    f.paintFrame(canvas, curFrame + f.getFramesCount()/2);
+                } else {
+                    canvas.drawBitmap(bitmap_new, 0, 0, mPaint);
+                }
                 showFilter.setBitmap(bitmap_old);
             } else {
                 showFilter.setBitmap(bitmap_new);

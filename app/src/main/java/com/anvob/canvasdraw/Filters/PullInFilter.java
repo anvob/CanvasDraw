@@ -2,6 +2,7 @@ package com.anvob.canvasdraw.Filters;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -19,23 +20,31 @@ import com.anvob.canvasdraw.ActionFilter;
 public class PullInFilter extends ActionFilter {
     public static int LEFT_AND_RIGHT = 0;
     public static int TOP_AND_DOWN = 1;
-    public static int TOP_LEFT_AND_BOTTOM_RIGHT = 2;
-    public static int TOP_RIGHT_AND_BOTTOM_LEFT = 3;
+    public static int TOP_LEFT_AND_BOTTOM_RIGHT = 3;
+    public static int TOP_RIGHT_AND_BOTTOM_LEFT = 2;
 
     private Bitmap bitmap; // битмап который отрисовается фильтром.
     private int framesCount; // количество кадров, которое создает данный фильтр, от начала до конца.
     private int mVariant;
     private Paint paint;
+    private Paint paintMode;
     private ActionFilter mNextFilter;
 
     public PullInFilter(int framesCount, int variant){
         this.framesCount=framesCount;
         this.mVariant=variant;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintMode = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintMode.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));//SRC_OUT
     }
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    @Override
+    public void setPaint(Paint paint) {
+
     }
 
     public void setVariant(int variant){
@@ -43,72 +52,54 @@ public class PullInFilter extends ActionFilter {
     }
 
     @Override
-    public Bitmap paintFrame(Canvas canvas, int curFrame) {
-        int width=0,height=0,x=0,y=0;
+    public void paintFrame(Canvas canvas, int curFrame) {
         if(curFrame<=framesCount&&curFrame>0) {
             if(curFrame<framesCount) {
-                int stepHeight = bitmap.getHeight() / framesCount/2 * curFrame;
-                int stepWidth = bitmap.getWidth() / framesCount/2 * curFrame;
+                //save current layer
+                canvas.saveLayer(0,0,canvas.getWidth(),canvas.getHeight(),paint,Canvas.ALL_SAVE_FLAG);
+                //draw transition by variants
                 if(mVariant==0) {
-                    x = bitmap.getWidth()/2-stepWidth;
-                    y = 0;
-                    width = stepWidth;
-                    height = bitmap.getHeight();
-                    Bitmap b1 = Bitmap.createBitmap(bitmap, x, y, width, height);
-                    x = bitmap.getWidth()/2;
-                    y = 0;
-                    width=stepWidth;
-                    height = bitmap.getHeight();
-                    Bitmap b2 = Bitmap.createBitmap(bitmap, x, y, width, height);
-                    canvas.drawBitmap(b1, 0, 0, paint);
-                    b1 = null;
-                    canvas.drawBitmap(b2, canvas.getWidth()-stepWidth, 0, paint);
-                    b2 = null;
+                    int stepWidth = bitmap.getWidth() / framesCount/2 * curFrame;
+                    canvas.drawRect(stepWidth,0,bitmap.getWidth()-stepWidth,bitmap.getHeight(),paint);
                 } else if(mVariant==1){
-                    x = 0;
-                    y = bitmap.getHeight()/2-stepHeight;
-                    width = bitmap.getWidth();
-                    height = stepHeight;
-                    Bitmap b1 = Bitmap.createBitmap(bitmap, x, y, width, height);
-                    x = 0;
-                    y = bitmap.getHeight()/2;
-                    width = bitmap.getWidth();
-                    height = stepHeight;
-                    Bitmap b2 = Bitmap.createBitmap(bitmap, x, y, width, height);
-                    canvas.drawBitmap(b1, 0, 0, paint);
-                    b1 = null;
-                    canvas.drawBitmap(b2, 0, canvas.getHeight() - stepHeight, paint);
-                    b2 = null;
+                    int stepHeight = bitmap.getHeight() / framesCount/2 * curFrame;
+                    canvas.drawRect(0,stepHeight,bitmap.getWidth(),bitmap.getHeight()-stepHeight,paint);
                 } else if(mVariant==2){
-                    Bitmap b1 = getTriangleMaskedBitmapUsingPorterDuff(bitmap,
-                            new Point(bitmap.getWidth()/2-stepWidth,bitmap.getHeight()/2-stepHeight),
-                            new Point(bitmap.getWidth()/2+stepWidth,bitmap.getHeight()/2+stepHeight),
-                            new Point(bitmap.getWidth()/2+stepWidth,bitmap.getHeight()/2-stepHeight));
-                    canvas.drawBitmap(b1, bitmap.getWidth()-stepWidth*2, 0, paint);
-                    Bitmap b2 = getTriangleMaskedBitmapUsingPorterDuff(bitmap,
-                            new Point(bitmap.getWidth()/2-stepWidth,bitmap.getHeight()/2-stepHeight),
-                            new Point(bitmap.getWidth()/2+stepWidth,bitmap.getHeight()/2+stepHeight),
-                            new Point(bitmap.getWidth()/2-stepWidth,bitmap.getHeight()/2+stepHeight));
-                    canvas.drawBitmap(b2, 0, bitmap.getHeight()-stepHeight*2, paint);
+                    int diag = (int)Math.sqrt(Math.pow(bitmap.getWidth(),2)+Math.pow(bitmap.getHeight(),2));
+                    int stepDiag = diag/framesCount/2*curFrame;
+                    canvas.rotate(-45,canvas.getWidth()/2,canvas.getHeight()/2);
+                    canvas.drawRect(
+                            stepDiag-(diag-bitmap.getHeight())/2,
+                            0-(diag-bitmap.getHeight())/2,
+                            bitmap.getWidth()+ (diag-bitmap.getHeight())/2-stepDiag,
+                            bitmap.getHeight()+(diag-bitmap.getHeight())/2,paint);
+                    canvas.rotate(45,canvas.getWidth()/2,canvas.getHeight()/2);
                 } else if(mVariant==3){
-                    Bitmap b1 = getTriangleMaskedBitmapUsingPorterDuff(bitmap,
-                            new Point(bitmap.getWidth()/2+stepWidth,bitmap.getHeight()/2-stepHeight),
-                            new Point(bitmap.getWidth()/2-stepWidth,bitmap.getHeight()/2+stepHeight),
-                            new Point(bitmap.getWidth()/2-stepWidth,bitmap.getHeight()/2-stepHeight));
-                    canvas.drawBitmap(b1, 0, 0, paint);
-                    Bitmap b2 = getTriangleMaskedBitmapUsingPorterDuff(bitmap,
-                            new Point(bitmap.getWidth()/2+stepWidth,bitmap.getHeight()/2-stepHeight),
-                            new Point(bitmap.getWidth()/2-stepWidth,bitmap.getHeight()/2+stepHeight),
-                            new Point(bitmap.getWidth()/2+stepWidth,bitmap.getHeight()/2+stepHeight));
-                    canvas.drawBitmap(b2, bitmap.getWidth()-stepWidth*2, bitmap.getHeight()-stepHeight*2, paint);
+                    int diag = (int)Math.sqrt(Math.pow(bitmap.getWidth(),2)+Math.pow(bitmap.getHeight(),2));
+                    int stepDiag = diag/framesCount/2*curFrame;
+                    canvas.rotate(45,canvas.getWidth()/2,canvas.getHeight()/2);
+                    canvas.drawRect(
+                            stepDiag-(diag-bitmap.getHeight())/2,
+                            0-(diag-bitmap.getHeight())/2,
+                            bitmap.getWidth()+ (diag-bitmap.getHeight())/2-stepDiag,
+                            bitmap.getHeight()+(diag-bitmap.getHeight())/2,paint);
+                    canvas.rotate(-45,canvas.getWidth()/2,canvas.getHeight()/2);
                 }
+                //do next filter if exist
+                if(mNextFilter!=null) {
+                    mNextFilter.setBitmap(bitmap);
+                    mNextFilter.setPaint(paintMode);
+                    mNextFilter.paintFrame(canvas, curFrame + mNextFilter.getFramesCount()/2);
+                } else {
+                    canvas.drawBitmap(bitmap,0,0,paintMode);
+                }
+                //update current layer
+                canvas.restore();
             }
             else{
                 canvas.drawBitmap(bitmap,0,0,paint);
             }
-
         }
-        return bitmap;
     }
 
     public static Bitmap getTriangleMaskedBitmapUsingPorterDuff(Bitmap source, Point p1, Point p2, Point p3) {
