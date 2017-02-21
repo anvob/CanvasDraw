@@ -1,4 +1,4 @@
-package com.anvob.canvasdraw;
+package com.anvob.canvasdraw.screen;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
@@ -20,6 +19,9 @@ import com.anvob.canvasdraw.Filters.PullOutFilter;
 import com.anvob.canvasdraw.Filters.SlideInFilter;
 import com.anvob.canvasdraw.Filters.SlideInOutFilter;
 import com.anvob.canvasdraw.Filters.SlideOutFilter;
+import com.anvob.canvasdraw.R;
+import com.anvob.canvasdraw.common.Slide;
+import com.anvob.canvasdraw.common.TransitionFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,16 +68,17 @@ public class MainActivity extends Activity {
             //b2 = Bitmap.createScaledBitmap(b2,1080,1080,true);
             //Bitmap b3 = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/Download/image.jpeg");
             //b3 = Bitmap.createScaledBitmap(b3,1080,1080,true);
+            int length = (int)getResources().getInteger(R.integer.image_width);
             Bitmap b1 = BitmapFactory.decodeResource(getResources(),R.drawable.b1,options);
-            b1 = Bitmap.createScaledBitmap(b1,1080,1080,true);
+            b1 = Bitmap.createScaledBitmap(b1,length,length,true);
             Bitmap b2 = BitmapFactory.decodeResource(getResources(),R.drawable.b2,options);
-            b2 = Bitmap.createScaledBitmap(b2,1080,1080,true);
+            b2 = Bitmap.createScaledBitmap(b2,length,length,true);
             Bitmap b3 = BitmapFactory.decodeResource(getResources(),R.drawable.b3,options);
-            b3 = Bitmap.createScaledBitmap(b3,1080,1080,true);
+            b3 = Bitmap.createScaledBitmap(b3,length,length,true);
             Bitmap b4 = BitmapFactory.decodeResource(getResources(),R.drawable.b4,options);
-            b4 = Bitmap.createScaledBitmap(b4,1080,1080,true);
+            b4 = Bitmap.createScaledBitmap(b4,length,length,true);
             Bitmap b5 = BitmapFactory.decodeResource(getResources(),R.drawable.b5,options);
-            b5 = Bitmap.createScaledBitmap(b5,1080,1080,true);
+            b5 = Bitmap.createScaledBitmap(b5,length,length,true);
             mSlideList.add(new Slide(b1, 50));
             mSlideList.add(new Slide(b2, 50));
             mSlideList.add(new Slide(b3, 50));

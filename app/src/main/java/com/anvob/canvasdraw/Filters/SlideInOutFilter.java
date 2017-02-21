@@ -3,8 +3,8 @@ package com.anvob.canvasdraw.Filters;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.anvob.canvasdraw.ActionFilter;
-import com.anvob.canvasdraw.TransitionFilter;
+import com.anvob.canvasdraw.common.ActionFilter;
+import com.anvob.canvasdraw.common.TransitionFilter;
 
 /**
  * Created by anvob on 17.02.2017.

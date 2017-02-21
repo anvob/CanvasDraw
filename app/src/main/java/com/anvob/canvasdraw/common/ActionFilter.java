@@ -1,4 +1,4 @@
-package com.anvob.canvasdraw;
+package com.anvob.canvasdraw.common;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

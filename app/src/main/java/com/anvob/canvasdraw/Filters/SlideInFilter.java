@@ -1,14 +1,11 @@
 package com.anvob.canvasdraw.Filters;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
-import com.anvob.canvasdraw.ActionFilter;
+import com.anvob.canvasdraw.common.ActionFilter;
 
 /**
  * Created by anvob on 17.02.2017.

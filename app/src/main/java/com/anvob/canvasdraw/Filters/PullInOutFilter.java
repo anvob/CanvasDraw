@@ -5,10 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.anvob.canvasdraw.ActionFilter;
-import com.anvob.canvasdraw.TransitionFilter;
-
-import static android.R.attr.bitmap;
+import com.anvob.canvasdraw.common.ActionFilter;
+import com.anvob.canvasdraw.common.TransitionFilter;
 
 /**
  * Created by anvob on 18.02.2017.

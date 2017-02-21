@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-import com.anvob.canvasdraw.ActionFilter;
+import com.anvob.canvasdraw.common.ActionFilter;
 
 /**
  * Created by anvob on 17.02.2017.

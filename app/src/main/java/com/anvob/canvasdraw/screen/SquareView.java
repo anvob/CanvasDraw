@@ -1,4 +1,4 @@
-package com.anvob.canvasdraw;
+package com.anvob.canvasdraw.screen;
 
 import android.content.Context;
 import android.util.AttributeSet;

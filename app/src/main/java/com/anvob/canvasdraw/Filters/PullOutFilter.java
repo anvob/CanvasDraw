@@ -3,14 +3,11 @@ package com.anvob.canvasdraw.Filters;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.Region;
 
-import com.anvob.canvasdraw.ActionFilter;
+import com.anvob.canvasdraw.common.ActionFilter;
 
 /**
  * Created by anvob on 18.02.2017.

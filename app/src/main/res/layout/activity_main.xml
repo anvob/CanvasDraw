@@ -4,9 +4,9 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.anvob.canvasdraw.MainActivity">
+    tools:context="com.anvob.canvasdraw.screen.MainActivity">
 
-    <com.anvob.canvasdraw.SquareView
+    <com.anvob.canvasdraw.screen.SquareView
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
