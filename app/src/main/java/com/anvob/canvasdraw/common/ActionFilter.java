@@ -16,7 +16,7 @@ public abstract class ActionFilter { // базовый класс для фил�
     protected ActionFilter mNextFilter;
     protected Paint paint;
 
-    public ActionFilter(int framesCount, int variant){
+    public ActionFilter(int framesCount, int variant) {
         this.framesCount = framesCount;
         this.mVariant = variant;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -25,18 +25,18 @@ public abstract class ActionFilter { // базовый класс для фил�
     public abstract void paintFrame(Canvas canvas, int curFrame); // отрисовывает следующий кадр.
 
     public void setPaint(Paint paint) {
-        this.paint=paint;
+        this.paint = paint;
     }
 
     public void setNextFilter(ActionFilter filter) {
-        this.mNextFilter=filter;
+        this.mNextFilter = filter;
     }
 
     public ActionFilter getNextFilter() {
         return mNextFilter;
     }
 
-    public void setVariant(int variant){
+    public void setVariant(int variant) {
         this.mVariant = variant;
     }
 

@@ -27,20 +27,21 @@ public class DrawView extends ImageView {
     private List<Slide> mSlideList;
     private List<TransitionFilter> mFilterList;
 
-    public void setCurrentFrame(int frameNum){
+    public void setCurrentFrame(int frameNum) {
         this.mCurFrame = frameNum;
     }
 
-    public int getCurrentFrame(){
+    public int getCurrentFrame() {
         return mCurFrame;
     }
 
     public void addFilters(List<TransitionFilter> list) {
         mFilterList.clear();
-        mFilterList.addAll(mFilterList.size(),list);
+        mFilterList.addAll(mFilterList.size(), list);
     }
+
     public void addSlides(List<Slide> list) {
-        mSlideList.addAll(mSlideList.size(),list);
+        mSlideList.addAll(mSlideList.size(), list);
     }
 
     public DrawView(Context context) {
@@ -67,7 +68,7 @@ public class DrawView extends ImageView {
         mSlideList = new ArrayList<>();
     }
 
-    public void moveToStart(){
+    public void moveToStart() {
         mCurSlide = 0;
         mCurSlideFrame = 0;
         mCurFrame = 0;
@@ -83,19 +84,19 @@ public class DrawView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(mCurSlide < mSlideList.size()) {
+        if (mCurSlide < mSlideList.size()) {
             Slide s = mSlideList.get(mCurSlide);
             int slideFrameCount = s.getFramesCount();
             TransitionFilter tf = null;
-            if(mCurSlide < mFilterList.size()) {
+            if (mCurSlide < mFilterList.size()) {
                 tf = mFilterList.get(mCurSlide);
                 slideFrameCount += tf.getFramesCount();
             }
-            if(mCurSlideFrame < s.getFramesCount()) {
+            if (mCurSlideFrame < s.getFramesCount()) {
                 canvas.drawBitmap(s.getBitmap(), 0, 0, mPaint);
             } else {
-                if(tf != null) {
-                    if(mCurSlideFrame < slideFrameCount) {
+                if (tf != null) {
+                    if (mCurSlideFrame < slideFrameCount) {
                         tf.paintNext(
                                 canvas,
                                 mSlideList.get(mCurSlide).getBitmap(),
@@ -106,9 +107,9 @@ public class DrawView extends ImageView {
             }
             mCurFrame++;
             mCurSlideFrame++;
-            if(mCurSlideFrame >= slideFrameCount) {
+            if (mCurSlideFrame >= slideFrameCount) {
                 mCurSlideFrame = 0;
-                mCurSlide ++;
+                mCurSlide++;
             }
             this.invalidate();
         }

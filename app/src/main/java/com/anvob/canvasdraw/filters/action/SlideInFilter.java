@@ -18,39 +18,39 @@ public class SlideInFilter extends ActionFilter {
 
     Matrix m = new Matrix();
 
-    public SlideInFilter( int framesCount, int variant){
-        super(framesCount,variant);
+    public SlideInFilter(int framesCount, int variant) {
+        super(framesCount, variant);
 
     }
 
     @Override
     public void paintFrame(Canvas canvas, int curFrame) {
-        if(curFrame <= framesCount) {
-            if(curFrame < framesCount) {
+        if (curFrame <= framesCount) {
+            if (curFrame < framesCount) {
                 int stepHeight = bitmap.getHeight() / framesCount * curFrame;
                 int stepWidth = bitmap.getWidth() / framesCount * curFrame;
 
                 switch (mVariant) {
                     case LEFT_TO_RIGHT: //left to right
-                        if(paint.getXfermode() != null) {
+                        if (paint.getXfermode() != null) {
                             canvas.drawRect(stepWidth, 0, bitmap.getWidth(), bitmap.getHeight(), paint);
                         }
-                        m.setTranslate(stepWidth  -bitmap.getWidth(), 0);
+                        m.setTranslate(stepWidth - bitmap.getWidth(), 0);
                         break;
                     case RIGHT_TO_LEFT: // right to left
-                        if(paint.getXfermode() != null) {
+                        if (paint.getXfermode() != null) {
                             canvas.drawRect(0, 0, bitmap.getWidth() - stepWidth, canvas.getHeight(), paint);
                         }
                         m.setTranslate(bitmap.getWidth() - stepWidth, 0);
                         break;
                     case TOP_TO_DOWN: // top to down
-                        if(paint.getXfermode() != null) {
+                        if (paint.getXfermode() != null) {
                             canvas.drawRect(0, stepHeight, bitmap.getWidth(), canvas.getHeight(), paint);
                         }
                         m.setTranslate(0, stepHeight - bitmap.getHeight());
                         break;
                     case DOWN_TO_TOP: // down to top
-                        if(paint.getXfermode() != null) {
+                        if (paint.getXfermode() != null) {
                             canvas.drawRect(0, 0, bitmap.getWidth(), canvas.getHeight() - stepHeight, paint);
                         }
                         m.setTranslate(0, bitmap.getHeight() - stepHeight);
@@ -61,7 +61,7 @@ public class SlideInFilter extends ActionFilter {
             } else {
                 canvas.drawBitmap(bitmap, 0, 0, paint);
             }
-        }else {
+        } else {
             canvas.drawBitmap(bitmap, 0, 0, paint);
         }
     }

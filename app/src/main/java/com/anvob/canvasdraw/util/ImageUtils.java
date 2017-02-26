@@ -25,7 +25,7 @@ public class ImageUtils {
             BitmapFactory.decodeStream(ims, null, options);
             ims = mContext.getAssets().open(assetName);
             Bitmap temp = BitmapFactory.decodeStream(ims);
-            return Bitmap.createScaledBitmap(temp,reqWidth,reqHeight,true);
+            return Bitmap.createScaledBitmap(temp, reqWidth, reqHeight, true);
         } catch (Exception e) {
             e.printStackTrace();
         }

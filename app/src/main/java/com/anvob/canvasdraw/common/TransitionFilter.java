@@ -11,7 +11,7 @@ import android.graphics.Paint;
 // Canvas, Bitmap - стандартные классы Android.
 // Canvas должен иметь квадратную форму по ширине экрана. в портретном режиме.
 // Нижеуказанные классы допустимо расширять кодом по необходимости
-public abstract class TransitionFilter  {  // базовый класс для Transition Filters.
+public abstract class TransitionFilter {  // базовый класс для Transition Filters.
     private Canvas canvas; // canvas, на котором производится всё рисование
     protected int framesCount; // количество кадров, которое создает данный фильтр, от начала до конца.
     private int curFrame; // текущий номер кадра.
@@ -19,23 +19,23 @@ public abstract class TransitionFilter  {  // базовый класс для T
     protected ActionFilter showFilter; // фильтр показа
 
     public void setFramesCount(int count) {
-        if(showFilter!=null) {
+        if (showFilter != null) {
             showFilter.setFramesCount(count);
         }
-        if(hideFilter!=null) {
+        if (hideFilter != null) {
             hideFilter.setFramesCount(count);
         }
     }
 
-    public int getFramesCount(){
+    public int getFramesCount() {
         int count = 0;
-        if(hideFilter!=null){
-            if(count<hideFilter.getFramesCount()) {
+        if (hideFilter != null) {
+            if (count < hideFilter.getFramesCount()) {
                 count = hideFilter.getFramesCount();
             }
         }
-        if(showFilter!=null){
-            if(count<showFilter.getFramesCount()) {
+        if (showFilter != null) {
+            if (count < showFilter.getFramesCount()) {
                 count = showFilter.getFramesCount();
             }
         }

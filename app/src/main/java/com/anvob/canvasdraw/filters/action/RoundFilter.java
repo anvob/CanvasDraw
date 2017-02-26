@@ -26,7 +26,7 @@ public class RoundFilter extends ActionFilter {
             canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), paint, Canvas.ALL_SAVE_FLAG);
             //draw transition
             int diag = (int) Math.sqrt(Math.pow(bitmap.getWidth(), 2) + Math.pow(bitmap.getHeight(), 2)) / 2;
-            int stepDiag = diag / framesCount  * curFrame;
+            int stepDiag = diag / framesCount * curFrame;
 
             canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, diag - stepDiag, paint);
 

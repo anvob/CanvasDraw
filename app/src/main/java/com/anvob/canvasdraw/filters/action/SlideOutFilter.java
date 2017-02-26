@@ -18,14 +18,14 @@ public class SlideOutFilter extends ActionFilter {
 
     private Matrix m;
 
-    public SlideOutFilter(int framesCount, int variant){
+    public SlideOutFilter(int framesCount, int variant) {
         super(framesCount, variant);
         m = new Matrix();
     }
 
     @Override
     public void paintFrame(Canvas canvas, int curFrame) {
-        if(curFrame <= framesCount) {
+        if (curFrame <= framesCount) {
             int stepHeight = bitmap.getHeight() / framesCount * curFrame;
             int stepWidth = bitmap.getWidth() / framesCount * curFrame;
 

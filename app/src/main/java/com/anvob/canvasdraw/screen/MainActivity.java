@@ -6,27 +6,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.anvob.canvasdraw.filters.action.CurtainFilter;
-import com.anvob.canvasdraw.filters.action.FadeInFilter;
-import com.anvob.canvasdraw.filters.action.PullInFilter;
-import com.anvob.canvasdraw.filters.transition.CurtainSlideInFilter;
-import com.anvob.canvasdraw.filters.transition.FadeInSlideFilter;
-import com.anvob.canvasdraw.filters.transition.PullInOutFilter;
-import com.anvob.canvasdraw.filters.action.PullOutFilter;
-import com.anvob.canvasdraw.filters.action.SlideInFilter;
-import com.anvob.canvasdraw.filters.transition.SlideInOutFilter;
-import com.anvob.canvasdraw.filters.action.SlideOutFilter;
 import com.anvob.canvasdraw.R;
 import com.anvob.canvasdraw.common.Slide;
 import com.anvob.canvasdraw.common.TransitionFilter;
-import com.anvob.canvasdraw.filters.action.RoundFilter;
+import com.anvob.canvasdraw.filters.transition.CurtainSlideInFilter;
+import com.anvob.canvasdraw.filters.transition.FadeInSlideFilter;
+import com.anvob.canvasdraw.filters.transition.PullInOutFilter;
 import com.anvob.canvasdraw.filters.transition.RoundSlideInFilter;
+import com.anvob.canvasdraw.filters.transition.SlideInOutFilter;
 import com.anvob.canvasdraw.util.ImageUtils;
 
 import java.util.ArrayList;
@@ -61,7 +52,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         //initSlidesRes();
         initSlidesAssets();
         shuffleFilters();
-        //initFilters();
         dw.addFilters(mFilterList);
         dw.addSlides(mSlideList);
         mFilterType.setText(R.string.title_mix);
@@ -138,18 +128,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         ImageUtils mImageUtils = new ImageUtils(this);
         Resources res = getResources();
         int length = res.getDisplayMetrics().widthPixels;
-        Bitmap b1 = mImageUtils.decodeSampledBitmapFromAssets("b1.jpg",length,length);
-        Bitmap b2 = mImageUtils.decodeSampledBitmapFromAssets("b2.jpg",length,length);
-        Bitmap b3 = mImageUtils.decodeSampledBitmapFromAssets("b3.jpg",length,length);
-        Bitmap b4 = mImageUtils.decodeSampledBitmapFromAssets("b4.jpg",length,length);
-        Bitmap b5 = mImageUtils.decodeSampledBitmapFromAssets("b5.jpg",length,length);
-        Bitmap b6 = mImageUtils.decodeSampledBitmapFromAssets("b6.jpg",length,length);
-        Bitmap b7 = mImageUtils.decodeSampledBitmapFromAssets("b7.jpg",length,length);
-        Bitmap b8 = mImageUtils.decodeSampledBitmapFromAssets("b8.jpg",length,length);
-        Bitmap b9 = mImageUtils.decodeSampledBitmapFromAssets("b9.jpg",length,length);
-        Bitmap b10 = mImageUtils.decodeSampledBitmapFromAssets("b10.jpg",length,length);
-        Bitmap b11 = mImageUtils.decodeSampledBitmapFromAssets("b11.jpg",length,length);
-        Bitmap b12 = mImageUtils.decodeSampledBitmapFromAssets("b12.jpg",length,length);
+        Bitmap b1 = mImageUtils.decodeSampledBitmapFromAssets("b1.jpg", length, length);
+        Bitmap b2 = mImageUtils.decodeSampledBitmapFromAssets("b2.jpg", length, length);
+        Bitmap b3 = mImageUtils.decodeSampledBitmapFromAssets("b3.jpg", length, length);
+        Bitmap b4 = mImageUtils.decodeSampledBitmapFromAssets("b4.jpg", length, length);
+        Bitmap b5 = mImageUtils.decodeSampledBitmapFromAssets("b5.jpg", length, length);
+        Bitmap b6 = mImageUtils.decodeSampledBitmapFromAssets("b6.jpg", length, length);
+        Bitmap b7 = mImageUtils.decodeSampledBitmapFromAssets("b7.jpg", length, length);
+        Bitmap b8 = mImageUtils.decodeSampledBitmapFromAssets("b8.jpg", length, length);
+        Bitmap b9 = mImageUtils.decodeSampledBitmapFromAssets("b9.jpg", length, length);
+        Bitmap b10 = mImageUtils.decodeSampledBitmapFromAssets("b10.jpg", length, length);
+        Bitmap b11 = mImageUtils.decodeSampledBitmapFromAssets("b11.jpg", length, length);
+        Bitmap b12 = mImageUtils.decodeSampledBitmapFromAssets("b12.jpg", length, length);
 
         mSlideList.add(new Slide(b1, 50));
         mSlideList.add(new Slide(b2, 50));
@@ -163,57 +153,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         mSlideList.add(new Slide(b10, 50));
         mSlideList.add(new Slide(b11, 50));
         mSlideList.add(new Slide(b12, 50));
-    }
-
-    void initFilters() {
-        //1
-        PullInOutFilter transFilter = new PullInOutFilter();
-        int variant = random.nextInt(3);
-        PullOutFilter pof = new PullOutFilter(20, variant);
-        variant = random.nextInt(3);
-        pof.setNextFilter(new SlideInFilter(20, variant));
-        transFilter.setShowFilter(pof);
-        mFilterList.add(transFilter);
-        //2
-        SlideInOutFilter transFilter2 = new SlideInOutFilter();
-        variant = random.nextInt(3);
-        transFilter2.setShowFilter(new SlideInFilter(20, variant));
-        transFilter2.setHideFilter(new SlideOutFilter(20, variant));
-        mFilterList.add(transFilter2);
-        //3
-        PullInOutFilter transFilter3 = new PullInOutFilter();
-        variant = random.nextInt(3);
-        PullInFilter pif = new PullInFilter(20, variant);
-        variant = random.nextInt(3);
-        pif.setNextFilter(new SlideInFilter(20, variant));
-        transFilter3.setShowFilter(pif);
-        mFilterList.add(transFilter3);
-        //4
-        SlideInOutFilter transFilter4 = new SlideInOutFilter();
-        variant = random.nextInt(3);
-        transFilter4.setShowFilter(new SlideInFilter(20, variant));
-        mFilterList.add(transFilter4);
-        //5
-        RoundSlideInFilter transFilter5 = new RoundSlideInFilter();
-        variant = random.nextInt(3);
-        transFilter5.setShowFilter(new SlideInFilter(20, variant));
-        transFilter5.setHideFilter(new RoundFilter(20, 0));
-        mFilterList.add(transFilter5);
-        //6
-        CurtainSlideInFilter transFilter6 = new CurtainSlideInFilter();
-        variant = random.nextInt(3);
-        CurtainFilter cf = new CurtainFilter(20, variant);
-        variant = random.nextInt(3);
-        cf.setNextFilter(new SlideInFilter(20, variant));
-        transFilter6.setShowFilter(cf);
-        mFilterList.add(transFilter6);
-        //7
-        FadeInSlideFilter transFilter7 = new FadeInSlideFilter();
-        variant = random.nextInt(3);
-        FadeInFilter fif = new FadeInFilter(20, 0);
-        fif.setNextFilter(new SlideInFilter(20, variant));
-        transFilter7.setShowFilter(fif);
-        mFilterList.add(transFilter7);
     }
 
     void shuffleFilters() {

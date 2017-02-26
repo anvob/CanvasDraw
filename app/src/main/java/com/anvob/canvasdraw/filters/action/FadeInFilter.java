@@ -16,9 +16,9 @@ public class FadeInFilter extends ActionFilter {
 
     @Override
     public void paintFrame(Canvas canvas, int curFrame) {
-        if(curFrame < framesCount) {
+        if (curFrame < framesCount) {
             int currentAlpha = 255 - 255 / framesCount * curFrame;
-            if(currentAlpha > 0) {
+            if (currentAlpha > 0) {
                 paint.setAlpha(currentAlpha);
             } else {
                 paint.setAlpha(0);
