@@ -9,18 +9,51 @@ import android.graphics.Paint;
  */
 
 public abstract class ActionFilter { // базовый класс для фильтров показа и скрытия.
-    private Bitmap bitmap; // битмап который отрисовается фильтром.
-    private int framesCount; // количество кадров, которое создает данный фильтр, от
-    // начала до конца.
-    public abstract void paintFrame(Canvas canvas, int curFrame); // отрисовывает следующий кадр.
-    public abstract void setNextFilter(ActionFilter ﬁlter); // устанавливает следующий фильтр для
-    //  составного фильтра.
-    public abstract ActionFilter getNextFilter(); // получает следующий фильтр для составного
-    // фильтра.
-    public abstract int getFramesCount();
-    public abstract void setFramesCount(int count);
-    public abstract void setBitmap(Bitmap bitmap);
-    public abstract void setPaint(Paint paint);
 
+    protected Bitmap bitmap; // битмап который отрисовается фильтром.
+    protected int framesCount; // количество кадров, которое создает данный фильтр, от начала до конца.
+    protected int mVariant;
+    protected ActionFilter mNextFilter;
+    protected Paint paint;
+
+    public ActionFilter(int framesCount, int variant){
+        this.framesCount = framesCount;
+        this.mVariant = variant;
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    }
+
+    public abstract void paintFrame(Canvas canvas, int curFrame); // отрисовывает следующий кадр.
+
+    public void setPaint(Paint paint) {
+        this.paint=paint;
+    }
+
+    public void setNextFilter(ActionFilter filter) {
+        this.mNextFilter=filter;
+    }
+
+    public ActionFilter getNextFilter() {
+        return mNextFilter;
+    }
+
+    public void setVariant(int variant){
+        this.mVariant = variant;
+    }
+
+    public int getVariant() {
+        return mVariant;
+    }
+
+    public int getFramesCount() {
+        return framesCount;
+    }
+
+    public void setFramesCount(int count) {
+        this.framesCount = count;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 }
 

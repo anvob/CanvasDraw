@@ -1,4 +1,4 @@
-package com.anvob.canvasdraw.Filters;
+package com.anvob.canvasdraw.filters.transition;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,43 +7,27 @@ import android.graphics.Paint;
 
 import com.anvob.canvasdraw.common.ActionFilter;
 import com.anvob.canvasdraw.common.TransitionFilter;
+import com.anvob.canvasdraw.filters.action.PullInFilter;
+import com.anvob.canvasdraw.filters.action.PullOutFilter;
+import com.anvob.canvasdraw.filters.action.SlideInFilter;
+
+import java.security.PublicKey;
 
 /**
  * Created by anvob on 18.02.2017.
  */
 
 public class PullInOutFilter extends TransitionFilter {
-    private Canvas canvas; // canvas, на котором производится всё рисование
-    private int framesCount; // количество кадров, которое создает данный фильтр, отначала до конца.
-    private int curFrame; // текущий номер кадра.
+
     Paint mPaint;
+
     public PullInOutFilter(){
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    }
-
-    private ActionFilter showFilter; // фильтр показа
-    @Override
-    public void setFramesCount(int count) {
-        if(showFilter!=null) {
-            showFilter.setFramesCount(count);
-        }
-    }
-
-    @Override
-    public int getFramesCount() {
-        int count = 0;
-        if(showFilter!=null){
-            if(count<showFilter.getFramesCount()) {
-                count = showFilter.getFramesCount();
-            }
-        }
-        return  count;
     }
 
     @Override
     public void paintNext(Canvas canvas, Bitmap bitmap_old, Bitmap bitmap_new, int curFrame) {
         if(showFilter!=null){
-
             if(showFilter.getClass()==PullOutFilter.class){
                 if(showFilter.getNextFilter()!=null) {
                     ActionFilter f = showFilter.getNextFilter();
@@ -55,17 +39,24 @@ public class PullInOutFilter extends TransitionFilter {
                 }
                 showFilter.setBitmap(bitmap_old);
             } else {
+                canvas.drawBitmap(bitmap_old,0,0,mPaint);
                 showFilter.setBitmap(bitmap_new);
             }
             showFilter.paintFrame(canvas,curFrame);
         }
     }
 
-    public ActionFilter getShowFilter() {
-        return showFilter;
-    }
-
-    public void setShowFilter(ActionFilter showFilter) {
-        this.showFilter = showFilter;
+    public static PullInOutFilter getPullInOutFilter(int pull_variant, int slidein_variant){
+        PullInOutFilter filter = new PullInOutFilter();
+        if(pull_variant >= 0 && pull_variant < 4) {
+            PullOutFilter pof = new PullOutFilter(20, pull_variant);
+            pof.setNextFilter(new SlideInFilter(20, slidein_variant));
+            filter.setShowFilter(pof);
+        } else if( pull_variant < 8){
+            PullInFilter pif = new PullInFilter(20, pull_variant-4);
+            pif.setNextFilter(new SlideInFilter(20, slidein_variant));
+            filter.setShowFilter(pif);
+        }
+        return filter;
     }
 }

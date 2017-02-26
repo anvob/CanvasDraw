@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="2dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="6dp"
+    card_view:cardUseCompatPadding="true">
+
+    <com.anvob.canvasdraw.screen.SquareView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_weight="1">
+
+        <com.anvob.canvasdraw.screen.SquareView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_centerInParent="true"
+            android:layout_weight="1">
+        <ImageView
+            android:id="@+id/image"
+            android:background="@drawable/b1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitStart"
+            android:contentDescription=""
+            tools:ignore="ContentDescription"
+            android:layout_alignParentBottom="true" />
+        </com.anvob.canvasdraw.screen.SquareView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGray"
+            tools:ignore="RtlHardcoded"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentLeft="false"
+                android:text="@string/app_name"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorLight"
+                android:textSize="@dimen/headline_text_size"
+                android:layout_marginLeft="@dimen/primary_text_margin"
+                android:layout_marginRight="@dimen/primary_text_margin"
+                android:layout_marginTop="@dimen/primary_text_top_padding"
+                android:layout_marginBottom="@dimen/subtext_size_bottom_padding"/>
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorLight"
+                android:textSize="@dimen/subtext_size"
+                android:layout_marginLeft="@dimen/primary_text_margin"
+                android:layout_marginRight="@dimen/primary_text_margin"
+                android:layout_below="@+id/text" />
+
+
+        </RelativeLayout>
+    </com.anvob.canvasdraw.screen.SquareView>
+</android.support.v7.widget.CardView>

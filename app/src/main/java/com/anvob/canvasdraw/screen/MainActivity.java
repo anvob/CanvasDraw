@@ -1,215 +1,332 @@
 package com.anvob.canvasdraw.screen;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
-import com.anvob.canvasdraw.Filters.PullInFilter;
-import com.anvob.canvasdraw.Filters.PullInOutFilter;
-import com.anvob.canvasdraw.Filters.PullOutFilter;
-import com.anvob.canvasdraw.Filters.SlideInFilter;
-import com.anvob.canvasdraw.Filters.SlideInOutFilter;
-import com.anvob.canvasdraw.Filters.SlideOutFilter;
+import com.anvob.canvasdraw.filters.action.CurtainFilter;
+import com.anvob.canvasdraw.filters.action.FadeInFilter;
+import com.anvob.canvasdraw.filters.action.PullInFilter;
+import com.anvob.canvasdraw.filters.transition.CurtainSlideInFilter;
+import com.anvob.canvasdraw.filters.transition.FadeInSlideFilter;
+import com.anvob.canvasdraw.filters.transition.PullInOutFilter;
+import com.anvob.canvasdraw.filters.action.PullOutFilter;
+import com.anvob.canvasdraw.filters.action.SlideInFilter;
+import com.anvob.canvasdraw.filters.transition.SlideInOutFilter;
+import com.anvob.canvasdraw.filters.action.SlideOutFilter;
 import com.anvob.canvasdraw.R;
 import com.anvob.canvasdraw.common.Slide;
 import com.anvob.canvasdraw.common.TransitionFilter;
+import com.anvob.canvasdraw.filters.action.RoundFilter;
+import com.anvob.canvasdraw.filters.transition.RoundSlideInFilter;
+import com.anvob.canvasdraw.util.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
-    SurfaceView sw;
-    RelativeLayout layout;
-    int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
+    DrawView dw;
+    SeekBar durationBar;
+    Button mBtnSlideOutIn;
+    Button mBtnRoundSlideIn;
+    Button mBtnPullInOut;
+    Button mBtnCurtain;
+    Button mBtnSlideOut;
+    Button mBtnFadeInSlide;
+    Button mBtnMix;
+    TextView mDurationValue;
+    TextView mFilterType;
+    Random random;
+    private List<Slide> mSlideList;
+    private List<TransitionFilter> mFilterList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        layout = (RelativeLayout) findViewById(R.id.layout1);
-
-        sw = new DrawView(this);
-        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layout.addView(sw,p);
+        mSlideList = new ArrayList<>();
+        mFilterList = new ArrayList<>();
+        random = new Random();
+        initView();
+        //initSlidesRes();
+        initSlidesAssets();
+        shuffleFilters();
+        //initFilters();
+        dw.addFilters(mFilterList);
+        dw.addSlides(mSlideList);
+        mFilterType.setText(R.string.title_mix);
     }
 
-    class DrawView extends SurfaceView implements SurfaceHolder.Callback {
+    void initView() {
+        dw = (DrawView) findViewById(R.id.image);
+        durationBar = (SeekBar) findViewById(R.id.seekBar);
+        durationBar.setOnSeekBarChangeListener(this);
+        durationBar.setProgress(50);
+        mBtnSlideOutIn = (Button) findViewById(R.id.btn_soi);
+        mBtnSlideOutIn.setOnClickListener(this);
+        mBtnRoundSlideIn = (Button) findViewById(R.id.btn_rsi);
+        mBtnRoundSlideIn.setOnClickListener(this);
+        mBtnPullInOut = (Button) findViewById(R.id.btn_pio);
+        mBtnPullInOut.setOnClickListener(this);
+        mBtnCurtain = (Button) findViewById(R.id.btn_c);
+        mBtnCurtain.setOnClickListener(this);
+        mBtnSlideOut = (Button) findViewById(R.id.btn_so);
+        mBtnSlideOut.setOnClickListener(this);
+        mBtnFadeInSlide = (Button) findViewById(R.id.btn_fis);
+        mBtnFadeInSlide.setOnClickListener(this);
+        mBtnMix = (Button) findViewById(R.id.btn_mix);
+        mBtnMix.setOnClickListener(this);
+        mDurationValue = (TextView) findViewById(R.id.value_duration);
+        mFilterType = (TextView) findViewById(R.id.filter_type);
+    }
 
-        private DrawThread drawThread;
-        Bitmap bitmap;
-        Paint paint;
+    void initSlidesRes() {
 
-        SlideInFilter filter;
-        private List<Slide> mSlideList;
-        private List<TransitionFilter> mFilterList;
+        Resources res = getResources();
+        int length = res.getDisplayMetrics().widthPixels;
+        Bitmap b1 = BitmapFactory.decodeResource(getResources(), R.drawable.b1);
+        b1 = Bitmap.createScaledBitmap(b1, length, length, true);
+        Bitmap b2 = BitmapFactory.decodeResource(getResources(), R.drawable.b2);
+        b2 = Bitmap.createScaledBitmap(b2, length, length, true);
+        Bitmap b3 = BitmapFactory.decodeResource(getResources(), R.drawable.b3);
+        b3 = Bitmap.createScaledBitmap(b3, length, length, true);
+        Bitmap b4 = BitmapFactory.decodeResource(getResources(), R.drawable.b4);
+        b4 = Bitmap.createScaledBitmap(b4, length, length, true);
+        Bitmap b5 = BitmapFactory.decodeResource(getResources(), R.drawable.b5);
+        b5 = Bitmap.createScaledBitmap(b5, length, length, true);
+        Bitmap b6 = BitmapFactory.decodeResource(getResources(), R.drawable.b6);
+        b6 = Bitmap.createScaledBitmap(b6, length, length, true);
+        Bitmap b7 = BitmapFactory.decodeResource(getResources(), R.drawable.b7);
+        b7 = Bitmap.createScaledBitmap(b7, length, length, true);
+        Bitmap b8 = BitmapFactory.decodeResource(getResources(), R.drawable.b8);
+        b8 = Bitmap.createScaledBitmap(b8, length, length, true);
+        Bitmap b9 = BitmapFactory.decodeResource(getResources(), R.drawable.b9);
+        b9 = Bitmap.createScaledBitmap(b9, length, length, true);
+        Bitmap b10 = BitmapFactory.decodeResource(getResources(), R.drawable.b10);
+        b10 = Bitmap.createScaledBitmap(b10, length, length, true);
+        Bitmap b11 = BitmapFactory.decodeResource(getResources(), R.drawable.b11);
+        b11 = Bitmap.createScaledBitmap(b11, length, length, true);
+        Bitmap b12 = BitmapFactory.decodeResource(getResources(), R.drawable.b12);
+        b12 = Bitmap.createScaledBitmap(b12, length, length, true);
 
-        public DrawView(Context context) {
-            super(context);
-            getHolder().addCallback(this);
-            Random random = new Random();
-            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mSlideList = new ArrayList<Slide>();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            //Bitmap b1 = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/Download/1.png");
-            //b1 = Bitmap.createScaledBitmap(b1,1080,1080,true);
-            //Bitmap b2 = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/Download/i.jpg");
-            //b2 = Bitmap.createScaledBitmap(b2,1080,1080,true);
-            //Bitmap b3 = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/Download/image.jpeg");
-            //b3 = Bitmap.createScaledBitmap(b3,1080,1080,true);
-            int length = (int)getResources().getInteger(R.integer.image_width);
-            Bitmap b1 = BitmapFactory.decodeResource(getResources(),R.drawable.b1,options);
-            b1 = Bitmap.createScaledBitmap(b1,length,length,true);
-            Bitmap b2 = BitmapFactory.decodeResource(getResources(),R.drawable.b2,options);
-            b2 = Bitmap.createScaledBitmap(b2,length,length,true);
-            Bitmap b3 = BitmapFactory.decodeResource(getResources(),R.drawable.b3,options);
-            b3 = Bitmap.createScaledBitmap(b3,length,length,true);
-            Bitmap b4 = BitmapFactory.decodeResource(getResources(),R.drawable.b4,options);
-            b4 = Bitmap.createScaledBitmap(b4,length,length,true);
-            Bitmap b5 = BitmapFactory.decodeResource(getResources(),R.drawable.b5,options);
-            b5 = Bitmap.createScaledBitmap(b5,length,length,true);
-            mSlideList.add(new Slide(b1, 50));
-            mSlideList.add(new Slide(b2, 50));
-            mSlideList.add(new Slide(b3, 50));
-            mSlideList.add(new Slide(b4, 50));
-            mSlideList.add(new Slide(b5, 50));
+        mSlideList.add(new Slide(b1, 50));
+        mSlideList.add(new Slide(b2, 50));
+        mSlideList.add(new Slide(b3, 50));
+        mSlideList.add(new Slide(b4, 50));
+        mSlideList.add(new Slide(b5, 50));
+        mSlideList.add(new Slide(b6, 50));
+        mSlideList.add(new Slide(b7, 50));
+        mSlideList.add(new Slide(b8, 50));
+        mSlideList.add(new Slide(b9, 50));
+        mSlideList.add(new Slide(b10, 50));
+        mSlideList.add(new Slide(b11, 50));
+        mSlideList.add(new Slide(b12, 50));
+    }
 
-            mFilterList = new ArrayList<TransitionFilter>();
-            //1
-            PullInOutFilter transFilter = new PullInOutFilter();
-            int variant = random.nextInt(3);
-            PullOutFilter pof = new PullOutFilter(20,variant);
-            variant = random.nextInt(3);
-            pof.setNextFilter(new SlideInFilter(20,variant));
-            transFilter.setShowFilter(pof);
-            mFilterList.add(transFilter);
-            //2
-            SlideInOutFilter transFilter2 = new SlideInOutFilter();
-            variant = random.nextInt(3);
-            transFilter2.setShowFilter(new SlideInFilter(20, variant));
-            transFilter2.setHideFilter(new SlideOutFilter(20, variant));
-            mFilterList.add(transFilter2);
-            //3
-            PullInOutFilter transFilter3 = new PullInOutFilter();
-            variant = random.nextInt(3);
-            PullInFilter pif = new PullInFilter(20,variant);
-            variant = random.nextInt(3);
-            pif.setNextFilter(new SlideInFilter(20,variant));
-            transFilter3.setShowFilter(pif);
-            mFilterList.add(transFilter3);
-            //4
-            SlideInOutFilter transFilter4 = new SlideInOutFilter();
-            variant = random.nextInt(3);
-            transFilter4.setShowFilter(new SlideInFilter(20, variant));
-            mFilterList.add(transFilter4);
-        }
-        @Override
-        public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
-        }
+    void initSlidesAssets() {
 
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                                   int height) {
-        }
+        ImageUtils mImageUtils = new ImageUtils(this);
+        Resources res = getResources();
+        int length = res.getDisplayMetrics().widthPixels;
+        Bitmap b1 = mImageUtils.decodeSampledBitmapFromAssets("b1.jpg",length,length);
+        Bitmap b2 = mImageUtils.decodeSampledBitmapFromAssets("b2.jpg",length,length);
+        Bitmap b3 = mImageUtils.decodeSampledBitmapFromAssets("b3.jpg",length,length);
+        Bitmap b4 = mImageUtils.decodeSampledBitmapFromAssets("b4.jpg",length,length);
+        Bitmap b5 = mImageUtils.decodeSampledBitmapFromAssets("b5.jpg",length,length);
+        Bitmap b6 = mImageUtils.decodeSampledBitmapFromAssets("b6.jpg",length,length);
+        Bitmap b7 = mImageUtils.decodeSampledBitmapFromAssets("b7.jpg",length,length);
+        Bitmap b8 = mImageUtils.decodeSampledBitmapFromAssets("b8.jpg",length,length);
+        Bitmap b9 = mImageUtils.decodeSampledBitmapFromAssets("b9.jpg",length,length);
+        Bitmap b10 = mImageUtils.decodeSampledBitmapFromAssets("b10.jpg",length,length);
+        Bitmap b11 = mImageUtils.decodeSampledBitmapFromAssets("b11.jpg",length,length);
+        Bitmap b12 = mImageUtils.decodeSampledBitmapFromAssets("b12.jpg",length,length);
 
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            drawThread = new DrawThread(getHolder());
-            drawThread.setRunning(true);
-            drawThread.start();
-        }
+        mSlideList.add(new Slide(b1, 50));
+        mSlideList.add(new Slide(b2, 50));
+        mSlideList.add(new Slide(b3, 50));
+        mSlideList.add(new Slide(b4, 50));
+        mSlideList.add(new Slide(b5, 50));
+        mSlideList.add(new Slide(b6, 50));
+        mSlideList.add(new Slide(b7, 50));
+        mSlideList.add(new Slide(b8, 50));
+        mSlideList.add(new Slide(b9, 50));
+        mSlideList.add(new Slide(b10, 50));
+        mSlideList.add(new Slide(b11, 50));
+        mSlideList.add(new Slide(b12, 50));
+    }
 
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            boolean retry = true;
-            drawThread.setRunning(false);
-            while (retry) {
-                try {
-                    drawThread.join();
-                    retry = false;
-                } catch (InterruptedException e) {
-                }
+    void initFilters() {
+        //1
+        PullInOutFilter transFilter = new PullInOutFilter();
+        int variant = random.nextInt(3);
+        PullOutFilter pof = new PullOutFilter(20, variant);
+        variant = random.nextInt(3);
+        pof.setNextFilter(new SlideInFilter(20, variant));
+        transFilter.setShowFilter(pof);
+        mFilterList.add(transFilter);
+        //2
+        SlideInOutFilter transFilter2 = new SlideInOutFilter();
+        variant = random.nextInt(3);
+        transFilter2.setShowFilter(new SlideInFilter(20, variant));
+        transFilter2.setHideFilter(new SlideOutFilter(20, variant));
+        mFilterList.add(transFilter2);
+        //3
+        PullInOutFilter transFilter3 = new PullInOutFilter();
+        variant = random.nextInt(3);
+        PullInFilter pif = new PullInFilter(20, variant);
+        variant = random.nextInt(3);
+        pif.setNextFilter(new SlideInFilter(20, variant));
+        transFilter3.setShowFilter(pif);
+        mFilterList.add(transFilter3);
+        //4
+        SlideInOutFilter transFilter4 = new SlideInOutFilter();
+        variant = random.nextInt(3);
+        transFilter4.setShowFilter(new SlideInFilter(20, variant));
+        mFilterList.add(transFilter4);
+        //5
+        RoundSlideInFilter transFilter5 = new RoundSlideInFilter();
+        variant = random.nextInt(3);
+        transFilter5.setShowFilter(new SlideInFilter(20, variant));
+        transFilter5.setHideFilter(new RoundFilter(20, 0));
+        mFilterList.add(transFilter5);
+        //6
+        CurtainSlideInFilter transFilter6 = new CurtainSlideInFilter();
+        variant = random.nextInt(3);
+        CurtainFilter cf = new CurtainFilter(20, variant);
+        variant = random.nextInt(3);
+        cf.setNextFilter(new SlideInFilter(20, variant));
+        transFilter6.setShowFilter(cf);
+        mFilterList.add(transFilter6);
+        //7
+        FadeInSlideFilter transFilter7 = new FadeInSlideFilter();
+        variant = random.nextInt(3);
+        FadeInFilter fif = new FadeInFilter(20, 0);
+        fif.setNextFilter(new SlideInFilter(20, variant));
+        transFilter7.setShowFilter(fif);
+        mFilterList.add(transFilter7);
+    }
+
+    void shuffleFilters() {
+        if (mSlideList != null && mFilterList != null) {
+            mFilterList.clear();
+            for (int i = 0; i < mSlideList.size() - 1; i++) {
+                mFilterList.add(getFilterById(random.nextInt(5)));
             }
         }
+    }
 
-        class DrawThread extends Thread {
+    TransitionFilter getFilterById(int id) {
+        switch (id) {
+            case 0:
+                return SlideInOutFilter.getSlideInOutFilter(random.nextInt(3));
+            case 1:
+                return RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(3));
+            case 2:
+                return PullInOutFilter.getPullInOutFilter(random.nextInt(7), random.nextInt(3));
+            case 3:
+                return CurtainSlideInFilter.getCurtainFilter(random.nextInt(3), random.nextInt(3));
+            case 4:
+                return SlideInOutFilter.getSlideOutFilter(random.nextInt(3));
+            case 5:
+                return FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(3));
+            default:
+                return null;
+        }
+    }
 
-            private boolean running = false;
-            Canvas canvas;
-            private SurfaceHolder surfaceHolder;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
-            public DrawThread(SurfaceHolder surfaceHolder) {
-                this.surfaceHolder = surfaceHolder;
-            }
-
-            public void setRunning(boolean running) {
-                this.running = running;
-            }
-
-            @Override
-            public void run() {
-                canvas = null;
-                int curFrame = 0;
-                int slideFrameCount = 0;
-                while (running) {
-                    for (int i = 0; i < mSlideList.size(); i++) {
-                        curFrame = 0;
-                        slideFrameCount=0;
-                        Slide sl = mSlideList.get(i);
-                        slideFrameCount += sl.getFramesCount();
-                        TransitionFilter filter = null;
-                        if (i < mSlideList.size()-1) {
-                            filter = mFilterList.get(i);
-                            if (filter != null) {
-                                slideFrameCount += filter.getFramesCount();
-                            }
-                        }
-                        //canvas = null;
-                        while (curFrame <= slideFrameCount) {
-                            try {
-                                canvas = surfaceHolder.lockCanvas(null);
-                                if (canvas == null)
-                                    continue;
-
-                                //show current slide
-                                if (curFrame <= sl.getFramesCount()) {
-                                    canvas.drawBitmap(sl.getBitmap(), 0, 0, paint);
-                                    curFrame++;
-                                } else {
-                                    if (filter != null) {
-                                        filter.paintNext(
-                                                canvas,
-                                                mSlideList.get(i).getBitmap(),
-                                                mSlideList.get(i + 1).getBitmap(),
-                                                curFrame - sl.getFramesCount());
-                                        curFrame++;
-                                    }
-                                }
-                                canvas.drawText(curFrame+"",50,50,paint);
-
-                            } finally {
-                                if (canvas != null) {
-                                    surfaceHolder.unlockCanvasAndPost(canvas);
-                                }
-                            }
-                        }
+    @Override
+    public void onClick(View view) {
+        if (mSlideList != null && mFilterList != null) {
+            mFilterList.clear();
+            switch (view.getId()) {
+                case R.id.btn_soi:
+                    for (int i = 0; i < mSlideList.size() - 1; i++) {
+                        mFilterList.add(SlideInOutFilter.getSlideInOutFilter(random.nextInt(3)));
                     }
-                    running=false;
-                }
+                    mFilterType.setText(R.string.title_soi);
+                    break;
+                case R.id.btn_rsi:
+                    for (int i = 0; i < mSlideList.size() - 1; i++) {
+                        mFilterList.add(RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(3)));
+                    }
+                    mFilterType.setText(R.string.title_rsi);
+                    break;
+                case R.id.btn_pio:
+                    for (int i = 0; i < mSlideList.size() - 1; i++) {
+                        mFilterList.add(PullInOutFilter.getPullInOutFilter(random.nextInt(7), random.nextInt(3)));
+                    }
+                    mFilterType.setText(R.string.title_pio);
+                    break;
+                case R.id.btn_c:
+                    for (int i = 0; i < mSlideList.size() - 1; i++) {
+                        mFilterList.add(CurtainSlideInFilter.getCurtainFilter(random.nextInt(3), random.nextInt(3)));
+                    }
+                    mFilterType.setText(R.string.title_curtain);
+                    break;
+                case R.id.btn_so:
+                    for (int i = 0; i < mSlideList.size() - 1; i++) {
+                        mFilterList.add(SlideInOutFilter.getSlideOutFilter(random.nextInt(3)));
+                    }
+                    mFilterType.setText(R.string.title_so);
+                    break;
+                case R.id.btn_fis:
+                    for (int i = 0; i < mSlideList.size() - 1; i++) {
+                        mFilterList.add(FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(3)));
+                    }
+                    mFilterType.setText(R.string.title_fis);
+                    break;
+                case R.id.btn_mix:
+                    shuffleFilters();
+                    mFilterType.setText(R.string.title_mix);
+                    break;
+            }
+            dw.addFilters(mFilterList);
+            startSlideShow();
+        }
+    }
+
+
+    void startSlideShow() {
+        dw.moveToStart();
+    }
+
+    void updateSlideListDuration(int duration) {
+        if (mSlideList != null && mSlideList.size() > 0) {
+            for (Slide s : mSlideList) {
+                s.setFramesCount(duration);
+                startSlideShow();
             }
         }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        mDurationValue.setText((seekBar.getProgress() + 10) + "");
+        updateSlideListDuration(seekBar.getProgress() + 10);
     }
 }

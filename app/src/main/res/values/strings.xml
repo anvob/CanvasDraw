@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">CanvasDraw</string>
+    <string name="title_activity_slide_list">SlideListActivity</string>
+    <string name="action_show">Show</string>
+    <string name="frames_count">Frames count: </string>
+    <string name="solideoutin_filter">SOI</string>
+    <string name="roundslidein_filter">RSI</string>
+    <string name="pullinout_filter">PIO</string>
+    <string name="curtain_filter">C</string>
+    <string name="slideout_filter">SO</string>
+    <string name="fadeinslide_filter">FIS</string>
+    <string name="shuffle">MIX</string>
+    <string name="duration">Slide duration</string>
+    <string name="title_soi">SlideOutIn</string>
+    <string name="title_rsi">RoundSlideIn</string>
+    <string name="title_pio">PullInOut</string>
+    <string name="title_curtain">Curtain</string>
+    <string name="title_so">SlideOut</string>
+    <string name="title_fis">FadeInSlide</string>
+    <string name="title_mix">MIX</string>
 </resources>
