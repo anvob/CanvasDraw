@@ -77,6 +77,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         mBtnMix = (Button) findViewById(R.id.btn_mix);
         mBtnMix.setOnClickListener(this);
         mDurationValue = (TextView) findViewById(R.id.value_duration);
+        mDurationValue.setText("50");
         mFilterType = (TextView) findViewById(R.id.filter_type);
     }
 
