@@ -37,7 +37,7 @@ public class PullOutFilter extends ActionFilter {
                     canvas.drawRect(0, bitmap.getHeight() / 2 - stepHeight, bitmap.getWidth(), bitmap.getHeight() / 2 + stepHeight, paint);
                 } else if (getVariant() == TOP_RIGHT_AND_BOTTOM_LEFT) {
                     int diag = (int) Math.sqrt(Math.pow(bitmap.getWidth(), 2) + Math.pow(bitmap.getHeight(), 2));
-                    int stepDiag = diag / framesCount / 3 * curFrame;
+                    int stepDiag = diag / framesCount / 2 * curFrame;
                     canvas.rotate(-45, canvas.getWidth() / 2, canvas.getHeight() / 2);
                     canvas.drawRect(
                             bitmap.getWidth() / 2 - stepDiag * 2,

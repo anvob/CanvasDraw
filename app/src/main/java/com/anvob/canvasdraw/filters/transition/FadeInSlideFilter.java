@@ -40,8 +40,9 @@ public class FadeInSlideFilter extends TransitionFilter {
 
     public static FadeInSlideFilter getFadeInSlideFilter(int variant) {
         FadeInSlideFilter filter = new FadeInSlideFilter();
-        FadeInFilter fif = new FadeInFilter(20, 0);
-        fif.setNextFilter(new SlideInFilter(20, variant));
+        int framesCount = 20;
+        FadeInFilter fif = new FadeInFilter(framesCount, 0);
+        fif.setNextFilter(new SlideInFilter(framesCount * 2, variant));
         filter.setShowFilter(fif);
         return filter;
     }

@@ -48,13 +48,14 @@ public class PullInOutFilter extends TransitionFilter {
 
     public static PullInOutFilter getPullInOutFilter(int pull_variant, int slidein_variant) {
         PullInOutFilter filter = new PullInOutFilter();
+        int framesCount = 20;
         if (pull_variant >= 0 && pull_variant < 4) {
-            PullOutFilter pof = new PullOutFilter(20, pull_variant);
-            pof.setNextFilter(new SlideInFilter(20, slidein_variant));
+            PullOutFilter pof = new PullOutFilter(framesCount, pull_variant);
+            pof.setNextFilter(new SlideInFilter(framesCount * 2, slidein_variant));
             filter.setShowFilter(pof);
         } else if (pull_variant < 8) {
-            PullInFilter pif = new PullInFilter(20, pull_variant - 4);
-            pif.setNextFilter(new SlideInFilter(20, slidein_variant));
+            PullInFilter pif = new PullInFilter(framesCount, pull_variant - 4);
+            pif.setNextFilter(new SlideInFilter(framesCount * 2, slidein_variant));
             filter.setShowFilter(pif);
         }
         return filter;

@@ -160,7 +160,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         if (mSlideList != null && mFilterList != null) {
             mFilterList.clear();
             for (int i = 0; i < mSlideList.size() - 1; i++) {
-                mFilterList.add(getFilterById(random.nextInt(5)));
+                mFilterList.add(getFilterById(random.nextInt(6)));
             }
         }
     }
@@ -168,17 +168,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
     TransitionFilter getFilterById(int id) {
         switch (id) {
             case 0:
-                return SlideInOutFilter.getSlideInOutFilter(random.nextInt(3));
+                return SlideInOutFilter.getSlideInOutFilter(random.nextInt(4));
             case 1:
-                return RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(3));
+                return RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(4));
             case 2:
-                return PullInOutFilter.getPullInOutFilter(random.nextInt(7), random.nextInt(3));
+                return PullInOutFilter.getPullInOutFilter(random.nextInt(8), random.nextInt(4));
             case 3:
-                return CurtainSlideInFilter.getCurtainFilter(random.nextInt(3), random.nextInt(3));
+                return CurtainSlideInFilter.getCurtainFilter(random.nextInt(4), random.nextInt(4));
             case 4:
-                return SlideInOutFilter.getSlideOutFilter(random.nextInt(3));
+                return SlideInOutFilter.getSlideOutFilter(random.nextInt(4));
             case 5:
-                return FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(3));
+                return FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(4));
             default:
                 return null;
         }
@@ -196,37 +196,37 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
             switch (view.getId()) {
                 case R.id.btn_soi:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(SlideInOutFilter.getSlideInOutFilter(random.nextInt(3)));
+                        mFilterList.add(SlideInOutFilter.getSlideInOutFilter(random.nextInt(4)));
                     }
                     mFilterType.setText(R.string.title_soi);
                     break;
                 case R.id.btn_rsi:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(3)));
+                        mFilterList.add(RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(4)));
                     }
                     mFilterType.setText(R.string.title_rsi);
                     break;
                 case R.id.btn_pio:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(PullInOutFilter.getPullInOutFilter(random.nextInt(7), random.nextInt(3)));
+                        mFilterList.add(PullInOutFilter.getPullInOutFilter(random.nextInt(8), random.nextInt(4)));
                     }
                     mFilterType.setText(R.string.title_pio);
                     break;
                 case R.id.btn_c:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(CurtainSlideInFilter.getCurtainFilter(random.nextInt(3), random.nextInt(3)));
+                        mFilterList.add(CurtainSlideInFilter.getCurtainFilter(random.nextInt(4), random.nextInt(4)));
                     }
                     mFilterType.setText(R.string.title_curtain);
                     break;
                 case R.id.btn_so:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(SlideInOutFilter.getSlideOutFilter(random.nextInt(3)));
+                        mFilterList.add(SlideInOutFilter.getSlideOutFilter(random.nextInt(4)));
                     }
                     mFilterType.setText(R.string.title_so);
                     break;
                 case R.id.btn_fis:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(3)));
+                        mFilterList.add(FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(4)));
                     }
                     mFilterType.setText(R.string.title_fis);
                     break;
@@ -239,7 +239,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
             startSlideShow();
         }
     }
-
 
     void startSlideShow() {
         dw.moveToStart();

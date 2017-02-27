@@ -40,8 +40,9 @@ public class CurtainSlideInFilter extends TransitionFilter {
 
     public static CurtainSlideInFilter getCurtainFilter(int curtain_var, int slidein_var) {
         CurtainSlideInFilter filter = new CurtainSlideInFilter();
-        CurtainFilter cf = new CurtainFilter(20, curtain_var);
-        cf.setNextFilter(new SlideInFilter(20, slidein_var));
+        int framesCount = 20;
+        CurtainFilter cf = new CurtainFilter(framesCount, curtain_var);
+        cf.setNextFilter(new SlideInFilter(framesCount * 2, slidein_var));
         filter.setShowFilter(cf);
         return filter;
     }
