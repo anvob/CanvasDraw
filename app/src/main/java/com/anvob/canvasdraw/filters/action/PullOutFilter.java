@@ -26,43 +26,44 @@ public class PullOutFilter extends ActionFilter {
 
     @Override
     public void paintFrame(Canvas canvas, int curFrame) {
-        if (curFrame <= framesCount) {
-            if (curFrame < framesCount) {
-                canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), paint, Canvas.ALL_SAVE_FLAG);
-                if (getVariant() == LEFT_AND_RIGHT) {
-                    int stepWidth = bitmap.getWidth() / framesCount / 2 * curFrame;
-                    canvas.drawRect(bitmap.getWidth() / 2 - stepWidth, 0, bitmap.getWidth() / 2 + stepWidth, bitmap.getHeight(), paint);
-                } else if (getVariant() == TOP_AND_DOWN) {
-                    int stepHeight = bitmap.getHeight() / framesCount / 2 * curFrame;
-                    canvas.drawRect(0, bitmap.getHeight() / 2 - stepHeight, bitmap.getWidth(), bitmap.getHeight() / 2 + stepHeight, paint);
-                } else if (getVariant() == TOP_RIGHT_AND_BOTTOM_LEFT) {
-                    int diag = (int) Math.sqrt(Math.pow(bitmap.getWidth(), 2) + Math.pow(bitmap.getHeight(), 2));
-                    int stepDiag = diag / framesCount / 2 * curFrame;
-                    canvas.rotate(-45, canvas.getWidth() / 2, canvas.getHeight() / 2);
-                    canvas.drawRect(
-                            bitmap.getWidth() / 2 - stepDiag * 2,
-                            0 - (diag - bitmap.getHeight()) / 2,
-                            bitmap.getWidth() / 2 + stepDiag * 2,
-                            bitmap.getHeight() + (diag - bitmap.getHeight()) / 2, paint);
-                    canvas.rotate(45, canvas.getWidth() / 2, canvas.getHeight() / 2);
-                } else if (getVariant() == TOP_LEFT_AND_BOTTOM_RIGHT) {
-                    int diag = (int) Math.sqrt(Math.pow(bitmap.getWidth(), 2) + Math.pow(bitmap.getHeight(), 2));
-                    int stepDiag = diag / framesCount / 2 * curFrame;
-                    canvas.rotate(45, canvas.getWidth() / 2, canvas.getHeight() / 2);
-                    canvas.drawRect(
-                            bitmap.getWidth() / 2 - stepDiag * 2,
-                            0 - (diag - bitmap.getHeight()) / 2,
-                            bitmap.getWidth() / 2 + stepDiag * 2,
-                            bitmap.getHeight() + (diag - bitmap.getHeight()) / 2, paint);
-                    canvas.rotate(-45, canvas.getWidth() / 2, canvas.getHeight() / 2);
-                }
-                paint.setXfermode(mode);
-                canvas.drawBitmap(bitmap, 0, 0, paint);
-                canvas.restore();
-                paint.setXfermode(null);
-            } else {
-                canvas.drawBitmap(bitmap, 0, 0, paint);
+
+        if (curFrame < framesCount) {
+            int back_layer = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), paint, Canvas.ALL_SAVE_FLAG);
+            if (getVariant() == LEFT_AND_RIGHT) {
+                int stepWidth = bitmap.getWidth() / framesCount / 2 * curFrame;
+                canvas.drawRect(bitmap.getWidth() / 2 - stepWidth, 0, bitmap.getWidth() / 2 + stepWidth, bitmap.getHeight(), paint);
+            } else if (getVariant() == TOP_AND_DOWN) {
+                int stepHeight = bitmap.getHeight() / framesCount / 2 * curFrame;
+                canvas.drawRect(0, bitmap.getHeight() / 2 - stepHeight, bitmap.getWidth(), bitmap.getHeight() / 2 + stepHeight, paint);
+            } else if (getVariant() == TOP_RIGHT_AND_BOTTOM_LEFT) {
+                int diag = (int) Math.sqrt(Math.pow(bitmap.getWidth(), 2) + Math.pow(bitmap.getHeight(), 2));
+                int stepDiag = diag / framesCount / 2 * curFrame;
+                int start = canvas.save();
+                canvas.rotate(-45, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                canvas.drawRect(
+                        bitmap.getWidth() / 2 - stepDiag,
+                        0 - (diag - bitmap.getHeight()) / 2,
+                        bitmap.getWidth() / 2 + stepDiag,
+                        bitmap.getHeight() + (diag - bitmap.getHeight()) / 2, paint);
+                canvas.restoreToCount(start);
+            } else if (getVariant() == TOP_LEFT_AND_BOTTOM_RIGHT) {
+                int diag = (int) Math.sqrt(Math.pow(bitmap.getWidth(), 2) + Math.pow(bitmap.getHeight(), 2));
+                int stepDiag = diag / framesCount / 2 * curFrame;
+                int start = canvas.save();
+                canvas.rotate(45, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                canvas.drawRect(
+                        bitmap.getWidth() / 2 - stepDiag,
+                        0 - (diag - bitmap.getHeight()) / 2,
+                        bitmap.getWidth() / 2 + stepDiag,
+                        bitmap.getHeight() + (diag - bitmap.getHeight()) / 2, paint);
+                canvas.restoreToCount(start);
             }
+            paint.setXfermode(mode);
+            canvas.drawBitmap(bitmap, 0, 0, paint);
+            canvas.restoreToCount(back_layer);
+            paint.setXfermode(null);
+        } else {
+            canvas.drawBitmap(bitmap, 0, 0, paint);
         }
     }
 }
