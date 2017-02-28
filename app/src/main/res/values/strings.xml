@@ -11,6 +11,7 @@
     <string name="fadeinslide_filter">FIS</string>
     <string name="shuffle">MIX</string>
     <string name="duration">Slide duration</string>
+    <string name="animation_speed">Animation speed</string>
     <string name="title_soi">SlideOutIn</string>
     <string name="title_rsi">RoundSlideIn</string>
     <string name="title_pio">PullInOut</string>

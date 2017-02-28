@@ -21,9 +21,15 @@ public abstract class TransitionFilter {  // базовый класс для Tr
     public void setFramesCount(int count) {
         if (showFilter != null) {
             showFilter.setFramesCount(count);
+            if (showFilter.getNextFilter() != null) {
+                showFilter.getNextFilter().setFramesCount(count * 2);
+            }
         }
         if (hideFilter != null) {
             hideFilter.setFramesCount(count);
+            if (hideFilter.getNextFilter() != null) {
+                hideFilter.getNextFilter().setFramesCount(count * 2);
+            }
         }
     }
 

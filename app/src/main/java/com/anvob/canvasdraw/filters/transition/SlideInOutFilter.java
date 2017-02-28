@@ -37,7 +37,6 @@ public class SlideInOutFilter extends TransitionFilter {
 
     public static SlideInOutFilter getSlideOutFilter(int variant) {
         SlideInOutFilter filter = new SlideInOutFilter();
-        //filter.setShowFilter(new SlideInFilter(20, variant));
         filter.setHideFilter(new SlideOutFilter(20, variant));
         return filter;
     }

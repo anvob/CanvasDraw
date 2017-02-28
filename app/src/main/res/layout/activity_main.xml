@@ -6,67 +6,159 @@
     android:layout_height="match_parent"
     tools:context="com.anvob.canvasdraw.screen.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_margin="8dp"
-        android:orientation="horizontal"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/image"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/image">
 
-        <Button
-            android:text="@string/solideoutin_filter"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_soi"
-            android:layout_weight="1" />
+            android:orientation="vertical" >
 
-        <Button
-            android:text="@string/roundslidein_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_rsi"
-            android:layout_weight="1" />
+            <LinearLayout
+                android:id="@+id/buttons"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/image"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
 
-        <Button
-            android:text="@string/pullinout_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_pio"
-            android:layout_weight="1" />
+                <Button
+                    android:text="@string/solideoutin_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_soi"
+                    android:layout_weight="1"
+                    tools:ignore="ButtonStyle"
+                    android:textSize="12sp" />
 
-        <Button
-            android:text="@string/curtain_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_c"
-            android:layout_weight="1" />
+                <Button
+                    android:text="@string/roundslidein_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_rsi"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
 
-        <Button
-            android:text="@string/slideout_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_so"
-            android:layout_weight="1" />
+                <Button
+                    android:text="@string/pullinout_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_pio"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
 
-        <Button
-            android:text="@string/fadeinslide_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_fis"
-            android:layout_weight="1" />
+                <Button
+                    android:text="@string/curtain_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_c"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
 
-        <Button
-            android:text="@string/shuffle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_mix"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:backgroundTint="@color/colorAccent"/>
-    </LinearLayout>
+                <Button
+                    android:text="@string/slideout_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_so"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:text="@string/fadeinslide_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_fis"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:text="@string/shuffle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_mix"
+                    android:layout_weight="1"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:background="@color/colorAccent"
+                    android:elevation="0dp"
+                    android:typeface="normal"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <TextView
+                android:text="@string/duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textduration"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/buttons"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:id="@+id/duration_set"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/textduration"
+                android:layout_marginBottom="8dp">
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:max="@integer/max_duration"
+                    android:layout_weight="0.9"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:id="@+id/value_duration"
+                    android:layout_weight="0.1" />
+            </LinearLayout>
+
+            <TextView
+                android:text="@string/animation_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_animation"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:id="@+id/animation_set"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/duration_set"
+                android:layout_marginBottom="8dp">
+
+                <SeekBar
+                    android:id="@+id/seekbar_animation"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:max="@integer/max_animation"
+                    android:layout_weight="0.9"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50"
+                    android:id="@+id/value_animation"
+                    android:layout_weight="0.1" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
     <TextView
@@ -80,46 +172,9 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_below="@+id/filter_type"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-
-
-    <TextView
-        android:text="@string/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textduration"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/buttons" />
-
-    <LinearLayout
-        android:id="@+id/duration_set"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textduration"
-        android:layout_marginBottom="8dp">
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:max="@integer/max_duration"
-            android:layout_weight="0.9"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="100"
-            android:id="@+id/value_duration"
-            android:layout_weight="0.1" />
-    </LinearLayout>
 
 
 </RelativeLayout>

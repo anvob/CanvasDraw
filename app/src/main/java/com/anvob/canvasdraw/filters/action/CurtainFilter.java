@@ -32,10 +32,10 @@ public class CurtainFilter extends ActionFilter {
     @Override
     public void paintFrame(Canvas canvas, int curFrame) {
         if (curFrame < framesCount) {
-            int partWidth = bitmap.getWidth() / 7;
-            int partHeight = bitmap.getHeight() / 7;
-            int stepHeight = partHeight / framesCount * curFrame;
-            int stepWidth = partWidth / framesCount * curFrame;
+            float partWidth = (float) bitmap.getWidth() / 7;
+            float partHeight = (float) bitmap.getHeight() / 7;
+            float stepHeight = partHeight / framesCount * curFrame;
+            float stepWidth = partWidth / framesCount * curFrame;
 
             int back_layer = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), paint, Canvas.ALL_SAVE_FLAG);
             int start = canvas.save();

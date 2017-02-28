@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
 
     DrawView dw;
     SeekBar durationBar;
+    SeekBar animationBar;
     Button mBtnSlideOutIn;
     Button mBtnRoundSlideIn;
     Button mBtnPullInOut;
@@ -36,6 +37,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
     Button mBtnFadeInSlide;
     Button mBtnMix;
     TextView mDurationValue;
+    TextView mAnimationValue;
     TextView mFilterType;
     Random random;
     private List<Slide> mSlideList;
@@ -62,6 +64,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         durationBar = (SeekBar) findViewById(R.id.seekBar);
         durationBar.setOnSeekBarChangeListener(this);
         durationBar.setProgress(50);
+        animationBar = (SeekBar) findViewById(R.id.seekbar_animation);
+        animationBar.setOnSeekBarChangeListener(this);
+        animationBar.setProgress(10);
         mBtnSlideOutIn = (Button) findViewById(R.id.btn_soi);
         mBtnSlideOutIn.setOnClickListener(this);
         mBtnRoundSlideIn = (Button) findViewById(R.id.btn_rsi);
@@ -78,6 +83,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         mBtnMix.setOnClickListener(this);
         mDurationValue = (TextView) findViewById(R.id.value_duration);
         mDurationValue.setText("50");
+        mAnimationValue = (TextView) findViewById(R.id.value_animation);
+        mAnimationValue.setText("20");
         mFilterType = (TextView) findViewById(R.id.filter_type);
     }
 
@@ -156,11 +163,21 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         mSlideList.add(new Slide(b12, 50));
     }
 
+    int getAnimationSpeed() {
+        if (animationBar != null) {
+            return animationBar.getProgress() + 10;
+        } else {
+            return 20;
+        }
+    }
+
     void shuffleFilters() {
         if (mSlideList != null && mFilterList != null) {
             mFilterList.clear();
             for (int i = 0; i < mSlideList.size() - 1; i++) {
-                mFilterList.add(getFilterById(random.nextInt(6)));
+                TransitionFilter tf = getFilterById(random.nextInt(6));
+                tf.setFramesCount(getAnimationSpeed());
+                mFilterList.add(tf);
             }
         }
     }
@@ -196,37 +213,49 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
             switch (view.getId()) {
                 case R.id.btn_soi:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(SlideInOutFilter.getSlideInOutFilter(random.nextInt(4)));
+                        TransitionFilter tf = SlideInOutFilter.getSlideInOutFilter(random.nextInt(4));
+                        tf.setFramesCount(getAnimationSpeed());
+                        mFilterList.add(tf);
                     }
                     mFilterType.setText(R.string.title_soi);
                     break;
                 case R.id.btn_rsi:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(4)));
+                        TransitionFilter tf = RoundSlideInFilter.getRoundSlideInFilter(random.nextInt(4));
+                        tf.setFramesCount(getAnimationSpeed());
+                        mFilterList.add(tf);
                     }
                     mFilterType.setText(R.string.title_rsi);
                     break;
                 case R.id.btn_pio:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(PullInOutFilter.getPullInOutFilter(random.nextInt(8), random.nextInt(4)));
+                        TransitionFilter tf = PullInOutFilter.getPullInOutFilter(random.nextInt(8), random.nextInt(4));
+                        tf.setFramesCount(getAnimationSpeed());
+                        mFilterList.add(tf);
                     }
                     mFilterType.setText(R.string.title_pio);
                     break;
                 case R.id.btn_c:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(CurtainSlideInFilter.getCurtainFilter(random.nextInt(4), random.nextInt(4)));
+                        TransitionFilter tf = CurtainSlideInFilter.getCurtainFilter(random.nextInt(4), random.nextInt(4));
+                        tf.setFramesCount(getAnimationSpeed());
+                        mFilterList.add(tf);
                     }
                     mFilterType.setText(R.string.title_curtain);
                     break;
                 case R.id.btn_so:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(SlideInOutFilter.getSlideOutFilter(random.nextInt(4)));
+                        TransitionFilter tf = SlideInOutFilter.getSlideOutFilter(random.nextInt(4));
+                        tf.setFramesCount(getAnimationSpeed());
+                        mFilterList.add(tf);
                     }
                     mFilterType.setText(R.string.title_so);
                     break;
                 case R.id.btn_fis:
                     for (int i = 0; i < mSlideList.size() - 1; i++) {
-                        mFilterList.add(FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(4)));
+                        TransitionFilter tf = FadeInSlideFilter.getFadeInSlideFilter(random.nextInt(4));
+                        tf.setFramesCount(getAnimationSpeed());
+                        mFilterList.add(tf);
                     }
                     mFilterType.setText(R.string.title_fis);
                     break;
@@ -253,6 +282,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         }
     }
 
+    void updateAnimationSpeed(int duration) {
+        if (mFilterList != null && mFilterList.size() > 0) {
+            for (TransitionFilter f : mFilterList) {
+                f.setFramesCount(duration);
+                startSlideShow();
+            }
+        }
+    }
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
@@ -265,7 +303,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        mDurationValue.setText((seekBar.getProgress() + 10) + "");
-        updateSlideListDuration(seekBar.getProgress() + 10);
+        if (seekBar.getId() == R.id.seekBar) {
+            mDurationValue.setText(String.valueOf(seekBar.getProgress() + 10));
+            updateSlideListDuration(seekBar.getProgress() + 10);
+        } else if (seekBar.getId() == R.id.seekbar_animation) {
+            mAnimationValue.setText(String.valueOf(seekBar.getProgress() + 10));
+            updateAnimationSpeed(seekBar.getProgress() + 10);
+        }
     }
 }

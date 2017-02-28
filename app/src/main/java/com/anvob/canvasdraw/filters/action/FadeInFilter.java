@@ -24,7 +24,6 @@ public class FadeInFilter extends ActionFilter {
                 paint.setAlpha(0);
             }
             canvas.drawBitmap(bitmap, 0, 0, paint);
-
         } else {
             paint.setAlpha(0);
             canvas.drawBitmap(bitmap, 0, 0, paint);

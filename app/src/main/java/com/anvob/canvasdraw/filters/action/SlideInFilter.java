@@ -27,8 +27,8 @@ public class SlideInFilter extends ActionFilter {
     public void paintFrame(Canvas canvas, int curFrame) {
 
         if (curFrame < framesCount) {
-            int stepHeight = bitmap.getHeight() / framesCount * curFrame;
-            int stepWidth = bitmap.getWidth() / framesCount * curFrame;
+            float stepHeight = (float) bitmap.getHeight() / framesCount * curFrame;
+            float stepWidth = (float) bitmap.getWidth() / framesCount * curFrame;
             switch (mVariant) {
                 case LEFT_TO_RIGHT: //left to right
                     if (paint.getXfermode() != null) {
