@@ -1,10 +1,15 @@
 package com.anvob.canvasdraw.screen;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -24,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends Activity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     DrawView dw;
     SeekBar durationBar;
@@ -47,15 +52,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         mSlideList = new ArrayList<>();
         mFilterList = new ArrayList<>();
         random = new Random();
         initView();
         //initSlidesRes();
-        initSlidesAssets();
+        initSlidesAssets(true);
         shuffleFilters();
         dw.addFilters(mFilterList);
         dw.addSlides(mSlideList);
+        dw.setRepeat(true);
         mFilterType.setText(R.string.title_mix);
     }
 
@@ -90,7 +98,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
 
     void initSlidesRes() {
 
-        Resources res = getResources();
+        /*Resources res = getResources();
         int length = res.getDisplayMetrics().widthPixels;
         Bitmap b1 = BitmapFactory.decodeResource(getResources(), R.drawable.b1);
         b1 = Bitmap.createScaledBitmap(b1, length, length, true);
@@ -128,14 +136,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         mSlideList.add(new Slide(b9, 50));
         mSlideList.add(new Slide(b10, 50));
         mSlideList.add(new Slide(b11, 50));
-        mSlideList.add(new Slide(b12, 50));
+        mSlideList.add(new Slide(b12, 50));*/
     }
 
-    void initSlidesAssets() {
+    void initSlidesAssets(boolean isRepeat) {
 
         ImageUtils mImageUtils = new ImageUtils(this);
         Resources res = getResources();
         int length = res.getDisplayMetrics().widthPixels;
+        //length = 320;
         Bitmap b1 = mImageUtils.decodeSampledBitmapFromAssets("b1.jpg", length, length);
         Bitmap b2 = mImageUtils.decodeSampledBitmapFromAssets("b2.jpg", length, length);
         Bitmap b3 = mImageUtils.decodeSampledBitmapFromAssets("b3.jpg", length, length);
@@ -149,6 +158,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         Bitmap b11 = mImageUtils.decodeSampledBitmapFromAssets("b11.jpg", length, length);
         Bitmap b12 = mImageUtils.decodeSampledBitmapFromAssets("b12.jpg", length, length);
 
+        mSlideList.clear();
+
         mSlideList.add(new Slide(b1, 50));
         mSlideList.add(new Slide(b2, 50));
         mSlideList.add(new Slide(b3, 50));
@@ -161,6 +172,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
         mSlideList.add(new Slide(b10, 50));
         mSlideList.add(new Slide(b11, 50));
         mSlideList.add(new Slide(b12, 50));
+        if(isRepeat) {
+            mSlideList.add(new Slide(b1, 0));
+        }
     }
 
     int getAnimationSpeed() {
@@ -288,6 +302,27 @@ public class MainActivity extends Activity implements View.OnClickListener, Seek
                 f.setFramesCount(duration);
                 startSlideShow();
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                startActivity(new Intent(this,HelpActivity.class));
+                return true;
+
+            default:
+                // Not one of ours. Perform default menu processing
+                return super.onOptionsItemSelected(item);
         }
     }
 

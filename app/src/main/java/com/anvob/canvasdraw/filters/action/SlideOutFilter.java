@@ -23,7 +23,7 @@ public class SlideOutFilter extends ActionFilter {
         m = new Matrix();
     }
 
-    @Override
+   @Override
     public void paintFrame(Canvas canvas, int curFrame) {
         if (curFrame < framesCount) {
             float stepHeight = (float) bitmap.getHeight() / framesCount * curFrame;

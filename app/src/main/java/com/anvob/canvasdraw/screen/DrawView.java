@@ -17,7 +17,7 @@ import java.util.List;
  * Created by anvob on 22.02.2017.
  */
 
-public class DrawView extends ImageView {
+public class DrawView extends android.support.v7.widget.AppCompatImageView {
 
     private int mCurFrame;
     private int mCurSlide;
@@ -26,6 +26,15 @@ public class DrawView extends ImageView {
     private Paint mPaint;
     private List<Slide> mSlideList;
     private List<TransitionFilter> mFilterList;
+    private boolean isRepeat;
+
+    public boolean isRepeat() {
+        return isRepeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        isRepeat = repeat;
+    }
 
     public void setCurrentFrame(int frameNum) {
         this.mCurFrame = frameNum;
@@ -86,6 +95,7 @@ public class DrawView extends ImageView {
         super.onDraw(canvas);
         if (mCurSlide < mSlideList.size()) {
             Slide s = mSlideList.get(mCurSlide);
+
             int slideFrameCount = s.getFramesCount();
             TransitionFilter tf = null;
             if (mCurSlide < mFilterList.size()) {
@@ -110,6 +120,12 @@ public class DrawView extends ImageView {
             if (mCurSlideFrame >= slideFrameCount) {
                 mCurSlideFrame = 0;
                 mCurSlide++;
+            }
+
+            if(isRepeat && mCurSlide == mSlideList.size() - 2 && mCurSlideFrame == slideFrameCount - 1) {
+                mCurFrame = 0;
+                mCurSlideFrame = 0;
+                mCurSlide = 0;
             }
             this.invalidate();
         }

@@ -1,22 +1,45 @@
 <resources>
     <string name="app_name">CanvasDraw</string>
-    <string name="title_activity_slide_list">SlideListActivity</string>
-    <string name="action_show">Show</string>
+    <string name="title_activity_slide_list" translatable="false">SlideListActivity</string>
+    <string name="action_show" translatable="false">Show</string>
     <string name="frames_count">Frames count: </string>
-    <string name="solideoutin_filter">SOI</string>
-    <string name="roundslidein_filter">RSI</string>
-    <string name="pullinout_filter">PIO</string>
-    <string name="curtain_filter">C</string>
-    <string name="slideout_filter">SO</string>
-    <string name="fadeinslide_filter">FIS</string>
-    <string name="shuffle">MIX</string>
+    <string name="solideoutin_filter" translatable="false">SOI</string>
+    <string name="roundslidein_filter" translatable="false">RSI</string>
+    <string name="pullinout_filter" translatable="false">PIO</string>
+    <string name="curtain_filter" translatable="false">C</string>
+    <string name="slideout_filter" translatable="false">SO</string>
+    <string name="fadeinslide_filter" translatable="false">FIS</string>
+    <string name="shuffle" translatable="false">MIX</string>
     <string name="duration">Slide duration</string>
     <string name="animation_speed">Animation speed</string>
-    <string name="title_soi">SlideOutIn</string>
-    <string name="title_rsi">RoundSlideIn</string>
-    <string name="title_pio">PullInOut</string>
-    <string name="title_curtain">Curtain</string>
-    <string name="title_so">SlideOut</string>
-    <string name="title_fis">FadeInSlide</string>
+    <string name="title_soi" translatable="false">SlideOutIn</string>
+    <string name="title_rsi" translatable="false">RoundSlideIn</string>
+    <string name="title_pio" translatable="false">PullInOut</string>
+    <string name="title_curtain" translatable="false">Curtain</string>
+    <string name="title_so" translatable="false">SlideOut</string>
+    <string name="title_fis" translatable="false">FadeInSlide</string>
     <string name="title_mix">MIX</string>
+    <string name="action_repeat" translatable="false">Animation repeat</string>
+
+    <string name="about_content">
+        <![CDATA[
+        <b>Description</b>
+        <br> SOI - SlideOutIn filter
+        <br> RSI - RoundSlideIn filter
+        <br> PIO - PullInOut filter
+        <br> C - Curtain filter
+        <br> SO - SlideOut filter
+        <br> FIS - FadeInSlide filter
+        <br> MIX - Shuffle filters
+        <br><br><b>Images</b>
+        <br>Action icons from <a href="https://material.io/icons/">www.material.io</a>
+        <br><br><b>Source code</b>
+        <br><a href="https://github.com/anvob/canvasdraw">https://github.com/anvob/canvasdraw</a>
+        <br><br>
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+        ]]>
+    </string>
+    <string name="info">Information</string>
 </resources>

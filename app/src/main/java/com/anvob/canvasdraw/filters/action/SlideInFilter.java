@@ -38,24 +38,25 @@ public class SlideInFilter extends ActionFilter {
                     break;
                 case RIGHT_TO_LEFT: // right to left
                     if (paint.getXfermode() != null) {
-                        canvas.drawRect(0, 0, bitmap.getWidth() - stepWidth, canvas.getHeight(), paint);
+                        canvas.drawRect(0, 0, bitmap.getWidth() - stepWidth, bitmap.getHeight(), paint);
                     }
                     m.setTranslate(bitmap.getWidth() - stepWidth, 0);
                     break;
                 case TOP_TO_DOWN: // top to down
                     if (paint.getXfermode() != null) {
-                        canvas.drawRect(0, stepHeight, bitmap.getWidth(), canvas.getHeight(), paint);
+                        canvas.drawRect(0, stepHeight, bitmap.getWidth(), bitmap.getHeight(), paint);
                     }
                     m.setTranslate(0, stepHeight - bitmap.getHeight());
                     break;
                 case DOWN_TO_TOP: // down to top
                     if (paint.getXfermode() != null) {
-                        canvas.drawRect(0, 0, bitmap.getWidth(), canvas.getHeight() - stepHeight, paint);
+                        canvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight() - stepHeight, paint);
                     }
                     m.setTranslate(0, bitmap.getHeight() - stepHeight);
                     break;
             }
             canvas.drawBitmap(bitmap, m, paint);
+
             m.reset();
         } else {
             canvas.drawBitmap(bitmap, 0, 0, paint);
